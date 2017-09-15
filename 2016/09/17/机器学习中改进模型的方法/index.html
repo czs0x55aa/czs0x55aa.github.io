@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -102,16 +102,16 @@
 <meta property="og:site_name" content="Naive">
 <meta property="og:description" content="在Coursera机器学习的第六周课程中，讲到了如何去改进模型，这也是自己在学习实践中比较困惑的一块内容。因此做个学习记录。  首先Andrew Ng给出了6个常用改进方法1.Get more training examples， 适用于高方差的情况2.Try smaller sets of features， 适用于高方差3.Try getting additional features， 适用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/机器学习中改进模型的方法/bias-variance.png">
-<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/机器学习中改进模型的方法/bias-variance-2.png">
-<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/机器学习中改进模型的方法/high-bias.png">
-<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/机器学习中改进模型的方法/high-variance.png">
-<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/机器学习中改进模型的方法/error-curve.jpg">
-<meta property="og:updated_time" content="2017-09-12T08:14:42.000Z">
+<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/bias-variance.png">
+<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/bias-variance-2.png">
+<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/high-bias.png">
+<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/high-variance.png">
+<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/error-curve.jpg">
+<meta property="og:updated_time" content="2017-09-15T04:18:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习中改进模型的方法">
 <meta name="twitter:description" content="在Coursera机器学习的第六周课程中，讲到了如何去改进模型，这也是自己在学习实践中比较困惑的一块内容。因此做个学习记录。  首先Andrew Ng给出了6个常用改进方法1.Get more training examples， 适用于高方差的情况2.Try smaller sets of features， 适用于高方差3.Try getting additional features， 适用">
-<meta name="twitter:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/机器学习中改进模型的方法/bias-variance.png">
+<meta name="twitter:image" content="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/bias-variance.png">
 
 
 
@@ -119,7 +119,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Gemini',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
@@ -274,7 +274,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/czs0x55aa/czs0x55aa.github.io/hexo/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -341,9 +341,9 @@
 <p>首先Andrew Ng给出了6个常用改进方法<br>1.Get more training examples， 适用于高方差的情况<br>2.Try smaller sets of features， 适用于高方差<br>3.Try getting additional features， 适用于高偏差问题<br>4.Try adding polynomial features， 类似于上一点，适用于高偏差<br>5.Try decreasing λ， 适用于高偏差<br>6.Try increasing λ， 适用于高方差<br><a id="more"></a><br>（ps：这里的λ是指正则项前面的系数）<br>这几个方法说起来很简单，但是在什么情况下用哪一种方法确是自己原先不清楚的。<br>高方差和高偏差问题会在下文中重点介绍。</p>
 <hr>
 <p>然后课程视频中还稍微提了下，评估机器学习算法的性能：<br>通常将数据集按3:1:1的比例划分训练集、交叉验证集、测试集<br>为什么要将数据分成三部分，而不是两部分呢？<br>在课程视频后面部分解释了了，训练的时候使用训练集数据，然后用交叉验证集来做模型选择，最后使用测试集来评估模型的泛化能力。</p>
-<h2 id="Bias-vs-Variance"><a href="#Bias-vs-Variance" class="headerlink" title="Bias vs. Variance"></a>Bias vs. Variance</h2><p>当学习算法预测的结果不理想时，基本可以分为两种情况：<br>1.欠拟合（高偏差）<br>2.过拟合（高方差）<br><img src="机器学习中改进模型的方法/bias-variance.png" alt=""><br>从图中可以看出，total error由variance和bias构成（误差的构成还包括随机噪声，一般情况下不讨论噪声），图中描绘了偏差和方差随模型复杂度的变化。<br>引用一张老外的图，以投掷飞镖为例<br><img src="机器学习中改进模型的方法/bias-variance-2.png" alt=""><br>在模型刚开始训练的时候（左下图），射的不准，但是还是比较稳定的发挥。从生活中来看这钟现象是不合常理的。不过从模型的角度看是合理的，模型在原始阶段预测的不准，由于没有经过有效的训练，往往会犯同样的错误（低方差）。此时模型还是欠拟合的，即高偏差问题。<br>当模型经过不断训练到后期（右上图），模型预测已经有一定准确性了（低偏差），但是在不同的数据集上可能不太稳定，这大概就是过拟合了，即高方差问题。需要注意的是高方差形容的是在模型在多组随机样本上训练结果的差异性。<br>左上图，是最理想的训练结果。右下图则是最糟糕的情况。</p>
+<h2 id="Bias-vs-Variance"><a href="#Bias-vs-Variance" class="headerlink" title="Bias vs. Variance"></a>Bias vs. Variance</h2><p>当学习算法预测的结果不理想时，基本可以分为两种情况：<br>1.欠拟合（高偏差）<br>2.过拟合（高方差）<br><img src="bias-variance.png" alt=""><br>从图中可以看出，total error由variance和bias构成（误差的构成还包括随机噪声，一般情况下不讨论噪声），图中描绘了偏差和方差随模型复杂度的变化。<br>引用一张老外的图，以投掷飞镖为例<br><img src="bias-variance-2.png" alt=""><br>在模型刚开始训练的时候（左下图），射的不准，但是还是比较稳定的发挥。从生活中来看这钟现象是不合常理的。不过从模型的角度看是合理的，模型在原始阶段预测的不准，由于没有经过有效的训练，往往会犯同样的错误（低方差）。此时模型还是欠拟合的，即高偏差问题。<br>当模型经过不断训练到后期（右上图），模型预测已经有一定准确性了（低偏差），但是在不同的数据集上可能不太稳定，这大概就是过拟合了，即高方差问题。需要注意的是高方差形容的是在模型在多组随机样本上训练结果的差异性。<br>左上图，是最理想的训练结果。右下图则是最糟糕的情况。</p>
 <hr>
-<p>那么如何来判断自己的模型是处于高偏差还是高方差呢？<br>针对开头提出的六条常用改进方法，来一一描述。<br>1.Get more training examples<br>这个是我最早的困扰，当模型效果不好的时候搞不清自己的训练集是否足够。<br>Andrew Ng给出的方法是绘制学习曲线。<br>学习曲线（Learning Curves）<br>学习曲线用来在二维面上表示模型误差与训练样本数量之间的关系。<br>当训练样本很少的时候，训练误差可能很低，而在验证集上的误差较大，这是由于小样本学习到的信息很有限。而当训练样本增大后，训练误差也可能会增大（很难完美的拟合数据），但验证集上的误差则会减少（或是接近训练误差），此时模型的泛化能力得到了提高。<br>（1）高偏差情况的学习曲线<br><img src="机器学习中改进模型的方法/high-bias.png" alt=""><br>如果模型的存在高偏差问题，那么最终趋于平衡的误差会较大，这意味着此时继续增加样本对模型训练也起不到帮助了。<br>（2）高方差情况的学习曲线<br><img src="机器学习中改进模型的方法/high-variance.png" alt=""><br>如果模型存在高方差的问题，可以看出随着样本的增加训练误差和验证误差的变化趋势是一样的。但是训练误差性对来说较小，且训练误差和验证误差有一定间距。<br>这种情况增大数据集可能会有帮助，因为随着数据的增大，两者的误差曲线可能会进一步的靠近。<br>2.Try smaller sets of features<br>3.Try getting additional features<br>4.Try adding polynomial features<br>2、3和4还是有区别的，暂且认为3和4的性质差不多吧，因为课程中没有对2,3做详细解释。<br>视频中给出了下图。随着模型复杂度的提高，训练误差和验证误差大致会呈现下图的状况。<br><img src="机器学习中改进模型的方法/error-curve.jpg" alt=""><br>在高偏差的情况，训练误差和验证误差较为接近，且都比较大。<br>在高方差的情况，训练误差较小，而验证误差较大。<br>感觉这种比较训练误差和验证误差的方法主要用来检查是否过拟合（高方差）的情况。<br>5.Try decreasing λ<br>6.Try increasing λ<br>正则化主要是为了避免过拟合所引入的。<br>这里对正则化中的系数λ的选择做了讨论：<br>当λ过小（甚至接近0），此时正则化起到的作用非常小，模型有很大的可能会出现过拟合（高方差）。<br>当λ过大时，由于正则化的起到的作用多大，则模型很可能欠拟合（高偏差）。<br>课程中给出了一种λ的选择办法，将不同的模型带入到验证集，并且使用不同的λ。从最终结果中选出一个最理想的模型。并且可以将最终选出的模型放到测试集上，进一步对模型的泛化能力做出评估。</p>
+<p>那么如何来判断自己的模型是处于高偏差还是高方差呢？<br>针对开头提出的六条常用改进方法，来一一描述。<br>1.Get more training examples<br>这个是我最早的困扰，当模型效果不好的时候搞不清自己的训练集是否足够。<br>Andrew Ng给出的方法是绘制学习曲线。<br>学习曲线（Learning Curves）<br>学习曲线用来在二维面上表示模型误差与训练样本数量之间的关系。<br>当训练样本很少的时候，训练误差可能很低，而在验证集上的误差较大，这是由于小样本学习到的信息很有限。而当训练样本增大后，训练误差也可能会增大（很难完美的拟合数据），但验证集上的误差则会减少（或是接近训练误差），此时模型的泛化能力得到了提高。<br>（1）高偏差情况的学习曲线<br><img src="high-bias.png" alt=""><br>如果模型的存在高偏差问题，那么最终趋于平衡的误差会较大，这意味着此时继续增加样本对模型训练也起不到帮助了。<br>（2）高方差情况的学习曲线<br><img src="high-variance.png" alt=""><br>如果模型存在高方差的问题，可以看出随着样本的增加训练误差和验证误差的变化趋势是一样的。但是训练误差性对来说较小，且训练误差和验证误差有一定间距。<br>这种情况增大数据集可能会有帮助，因为随着数据的增大，两者的误差曲线可能会进一步的靠近。<br>2.Try smaller sets of features<br>3.Try getting additional features<br>4.Try adding polynomial features<br>2、3和4还是有区别的，暂且认为3和4的性质差不多吧，因为课程中没有对2,3做详细解释。<br>视频中给出了下图。随着模型复杂度的提高，训练误差和验证误差大致会呈现下图的状况。<br><img src="error-curve.jpg" alt=""><br>在高偏差的情况，训练误差和验证误差较为接近，且都比较大。<br>在高方差的情况，训练误差较小，而验证误差较大。<br>感觉这种比较训练误差和验证误差的方法主要用来检查是否过拟合（高方差）的情况。<br>5.Try decreasing λ<br>6.Try increasing λ<br>正则化主要是为了避免过拟合所引入的。<br>这里对正则化中的系数λ的选择做了讨论：<br>当λ过小（甚至接近0），此时正则化起到的作用非常小，模型有很大的可能会出现过拟合（高方差）。<br>当λ过大时，由于正则化的起到的作用多大，则模型很可能欠拟合（高偏差）。<br>课程中给出了一种λ的选择办法，将不同的模型带入到验证集，并且使用不同的λ。从最终结果中选出一个最理想的模型。并且可以将最终选出的模型放到测试集上，进一步对模型的泛化能力做出评估。</p>
 <hr>
 <p>参考链接：<br><a href="https://www.zhihu.com/question/27068705/answer/35151681" target="_blank" rel="external">https://www.zhihu.com/question/27068705/answer/35151681</a><br><a href="http://scott.fortmann-roe.com/docs/BiasVariance.html" target="_blank" rel="external">http://scott.fortmann-roe.com/docs/BiasVariance.html</a></p>
 
@@ -455,7 +455,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/avatar.gif"
+               src="https://raw.githubusercontent.com/czs0x55aa/czs0x55aa.github.io/hexo/avatar.png"
                alt="czs0x55aa" />
           <p class="site-author-name" itemprop="name">czs0x55aa</p>
            
@@ -491,6 +491,41 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/czs0x55aa" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/czs0x55aa" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      ZhiHu
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:czs0x55aa@gmail.com" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Gmail
+                    
+                </a>
+              </span>
+            
           
         </div>
 
@@ -553,7 +588,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Gemini
   </a>
 </div>
 
@@ -632,6 +667,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>

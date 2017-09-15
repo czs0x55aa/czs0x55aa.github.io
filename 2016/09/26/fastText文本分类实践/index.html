@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -102,12 +102,12 @@
 <meta property="og:site_name" content="Naive">
 <meta property="og:description" content="背景前不久facebook开源了一个fastText工具，最近在网上传的挺火。相关论文：[1] P. Bojanowski, E. Grave, A. Joulin, T. Mikolov, Enriching Word Vectors with Subword Information[2] A. Joulin, E. Grave, P. Bojanowski, T. Mikolov, Bag o">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/26/fastText文本分类实践/fastText文本分类实践/learning-curve.png">
-<meta property="og:updated_time" content="2017-09-12T08:14:42.000Z">
+<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/26/fastText文本分类实践/learning-curve.png">
+<meta property="og:updated_time" content="2017-09-15T04:17:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fastText文本分类实践">
 <meta name="twitter:description" content="背景前不久facebook开源了一个fastText工具，最近在网上传的挺火。相关论文：[1] P. Bojanowski, E. Grave, A. Joulin, T. Mikolov, Enriching Word Vectors with Subword Information[2] A. Joulin, E. Grave, P. Bojanowski, T. Mikolov, Bag o">
-<meta name="twitter:image" content="http://czs0x55aa.github.io/2016/09/26/fastText文本分类实践/fastText文本分类实践/learning-curve.png">
+<meta name="twitter:image" content="http://czs0x55aa.github.io/2016/09/26/fastText文本分类实践/learning-curve.png">
 
 
 
@@ -115,7 +115,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Gemini',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
@@ -270,7 +270,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/czs0x55aa/czs0x55aa.github.io/hexo/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -339,7 +339,7 @@
 </blockquote>
 <p>其中<strong>label</strong>是类别前缀，这个前缀可以自定义。<br>自己构造的这3.5M数据中大概有26000+的样本。<br>由于新闻语料中带有一些记者信息，例如“本报记者 XXX..报道”这样的句子，这种语句样本对分类任务来说明显是干扰项，由于这类句子的格式不统一，这里没有做过滤。另外这种样本的数量对总训练集来说很少，应该对结果影响应该很小。</p>
 <h2 id="分类实验"><a href="#分类实验" class="headerlink" title="分类实验"></a>分类实验</h2><p>将数据集分成7:3的比例，前面用来训练，后面用来验证模型。<br>算法默认的迭代次数是5，尝试了几次发现10-30比较合适，在验证集上的准确率在78%左右。<br>python代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fasttext_test</span><span class="params">(epoch=<span class="number">20</span>)</span>:</span></div><div class="line">    classifier = fasttext.supervised(<span class="string">'/home/czs0x55aa/fasttext/data.train.txt'</span>, <span class="string">'model'</span>, epoch=epoch)</div><div class="line">    res = classifier.test(<span class="string">'/home/czs0x55aa/fasttext/data.test.txt'</span>)</div><div class="line">    <span class="keyword">print</span> res.precision</div><div class="line">    <span class="keyword">return</span> res.precision</div></pre></td></tr></table></figure></p>
-<p><img src="fastText文本分类实践/learning-curve.png" alt=""><br>总样本就是之前说过的26000+，横坐标是使用的训练样本的比例，验证的样本数量为剩余中随机选取的500个。<br>从0.7后面下降的位置实际上是不太合理的，因为算法接口的原因，这张图绘制的时候每次都是经过重新采样学习的，有一定的误差在里面。<br>但是总体上看1W多样本的时候已经接近78%的准确率了，后续增加样本基本不起作用，实际情况和语料还是有一定关系的。</p>
+<p><img src="learning-curve.png" alt=""><br>总样本就是之前说过的26000+，横坐标是使用的训练样本的比例，验证的样本数量为剩余中随机选取的500个。<br>从0.7后面下降的位置实际上是不太合理的，因为算法接口的原因，这张图绘制的时候每次都是经过重新采样学习的，有一定的误差在里面。<br>但是总体上看1W多样本的时候已经接近78%的准确率了，后续增加样本基本不起作用，实际情况和语料还是有一定关系的。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在搜狗新闻语料的9分类任务上准确率大约是78%，由于以前没研究过文本分类，对这个准确率好坏没有很直观的感受。<br>纯粹从个人角度看觉得效果还是可以的，因为该算法是对每一句预测标签的，然而一些句子信息可能本身就是中性的，所以如果在文章分类任务中，可能将句子的标签再做投票选择最高的，或者从概率层面做进一步的处理，最终的效果可能会更好。<br>另外一点感受就是，这个算法用起来是真方便，中文分完词丢进去就可以了。</p>
 
       
@@ -450,7 +450,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/avatar.gif"
+               src="https://raw.githubusercontent.com/czs0x55aa/czs0x55aa.github.io/hexo/avatar.png"
                alt="czs0x55aa" />
           <p class="site-author-name" itemprop="name">czs0x55aa</p>
            
@@ -486,6 +486,41 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/czs0x55aa" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/czs0x55aa" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      ZhiHu
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:czs0x55aa@gmail.com" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Gmail
+                    
+                </a>
+              </span>
+            
           
         </div>
 
@@ -548,7 +583,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Gemini
   </a>
 </div>
 
@@ -627,6 +662,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
