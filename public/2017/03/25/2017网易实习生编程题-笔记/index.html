@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="零碎记录," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="第一次做招聘类的编程题，还是有点不习惯，网易这次的题明显考察的是推导和思路，实现部分相对简单，也没有涉及到一些常见算法。这里对这次的编程题做个记录，有两题还没有想到好的解法，后面有时间再来补。">
+<meta name="keywords" content="零碎记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2017网易实习生编程题-笔记">
+<meta property="og:url" content="http://czs0x55aa.github.io/2017/03/25/2017网易实习生编程题-笔记/index.html">
+<meta property="og:site_name" content="Naive">
+<meta property="og:description" content="第一次做招聘类的编程题，还是有点不习惯，网易这次的题明显考察的是推导和思路，实现部分相对简单，也没有涉及到一些常见算法。这里对这次的编程题做个记录，有两题还没有想到好的解法，后面有时间再来补。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-12T08:14:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2017网易实习生编程题-笔记">
+<meta name="twitter:description" content="第一次做招聘类的编程题，还是有点不习惯，网易这次的题明显考察的是推导和思路，实现部分相对简单，也没有涉及到一些常见算法。这里对这次的编程题做个记录，有两题还没有想到好的解法，后面有时间再来补。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://czs0x55aa.github.io/2017/03/25/2017网易实习生编程题-笔记/"/>
+
+
+
+
+
+  <title>2017网易实习生编程题-笔记 | Naive</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Naive</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/03/25/2017网易实习生编程题-笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="czs0x55aa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Naive">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2017网易实习生编程题-笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-25T17:03:02+08:00">
+                2017-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>第一次做招聘类的编程题，还是有点不习惯，网易这次的题明显考察的是推导和思路，实现部分相对简单，也没有涉及到一些常见算法。<br>这里对这次的编程题做个记录，有两题还没有想到好的解法，后面有时间再来补。<br><a id="more"></a></p>
+<h2 id="1-魔法手环"><a href="#1-魔法手环" class="headerlink" title="1.魔法手环"></a>1.魔法手环</h2><p>题目大意：你有一个魔法手环，他是有一组数字构成的，你每次使用魔法的时候，手环中的数字会发生变化。<br>变化的规律是第x位变为第x位和x+1位的合，即<code>x[i] = x[i] + x[i + 1]</code>，最后一位会变为<code>x[n] = x[n] + x[0]</code>。<br>如果求和后的结果大于等于100，则取100的余数。</p>
+<h3 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h3><p>输入分为两行，第一行是两个数字，分别表示环的长度n和使用魔法的次数k，第二行输入n个数字。<br>要求输出经过k次变化后手环中的各位数字。</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>乍一看题目感觉很简单，两个循环模拟下就行了，实则不然。题目中限定了k的值非常大，直接模拟我只过了60%的样例。<br>这种情况应该得使用数学推导，直接求经过k次变换的结果。<br>假如4个数，列个表格：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">a</th>
+<th style="text-align:left">b</th>
+<th style="text-align:left">c</th>
+<th style="text-align:left">d</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">a+b</td>
+<td style="text-align:left">b+c</td>
+<td style="text-align:left">c+d</td>
+<td style="text-align:left">d+a</td>
+</tr>
+<tr>
+<td style="text-align:left">a+2b+c</td>
+<td style="text-align:left">b+2c+d</td>
+<td style="text-align:left">c+2d+a</td>
+<td style="text-align:left">d+2a+b</td>
+</tr>
+<tr>
+<td style="text-align:left">a+3b+3c+d</td>
+<td style="text-align:left">b+3c+3d+a</td>
+<td style="text-align:left">c+3d+3a+b</td>
+<td style="text-align:left">d+3a+3b+c</td>
+</tr>
+</tbody>
+</table>
+<p>计算过程还是有规律的，但是求100余数之后会怎么样，这里我没想清楚…卒</p>
+<h2 id="2-分饼干"><a href="#2-分饼干" class="headerlink" title="2.分饼干"></a>2.分饼干</h2><p>题目大意：有一盒饼干，饼干盒上标明了饼干的数目，但是这个数目的中间几位看不清了。现在需要将这些饼干评分给n个小朋友。<br>问饼干数量有多少种（这个地方有点记不清了…）。</p>
+<h3 id="输入输出-1"><a href="#输入输出-1" class="headerlink" title="输入输出"></a>输入输出</h3><p>第一行是一个数字，代表饼干数，这个数字最大是18位，中间看不清的位用x代替。<br>第二行输入小朋友的数量。<br>输出可能的种数。</p>
+<h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h3><p>第一反应是搜索题，对于看不清的数字位使用穷举，但是感觉复杂度太高，题目似乎没有限制看不清的位数，最多有18位，如果17位都看不清，好像结果显然是超时的…卒</p>
+<h2 id="3-男女排队"><a href="#3-男女排队" class="headerlink" title="3.男女排队"></a>3.男女排队</h2><p>题目大意：现在有一个队伍，里面有男生和女生，目标要让男生和女生尽量避免相邻的站位（避免男生前后是女生或者女生前后是男生的情况）。每次可以交换相邻两个人的位置，问最少的交换次数。</p>
+<h3 id="输入输出-2"><a href="#输入输出-2" class="headerlink" title="输入输出"></a>输入输出</h3><p>输入是一个字符序列，男生用’B’表示，女生用’G’表示。<br>例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GGBBG</div></pre></td></tr></table></figure></p>
+<p>输出是最小的交换次数。</p>
+<h3 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h3><p>乍看交换的情况可能比较复杂，细想了下是个简单的推导题。<br>首先要明确目标，要让男女相邻次数的最少，就要实现让男生和女生分布在队伍的两侧，这样只有1个相邻位。<br>另外，让男生站前面还是女生站前面应该取决于原先队列的前面是男生多还是女生多。<br>例如，前半部分男生多，那么把男生都换到前面。<br>交换的策略：<br>总人数为n，计数得到男生数量x，从前往后遍历当前队列的0-x-1位，当找到一个女生的时候结束遍历记录位置为i。然后从x-n位开始遍历，找到一个男生则结束记录位置j。此时j-i就是一趟需要的交换次数。<br>反复迭代这个过程，直到前x位都是男生，终止程序。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/零碎记录/" rel="tag"># 零碎记录</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/27/Python源码剖析笔记——整数对象/" rel="next" title="Python源码剖析笔记——整数对象">
+                <i class="fa fa-chevron-left"></i> Python源码剖析笔记——整数对象
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/12/Python源码剖析笔记——字符串对象/" rel="prev" title="Python源码剖析笔记——字符串对象">
+                Python源码剖析笔记——字符串对象 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="czs0x55aa" />
+          <p class="site-author-name" itemprop="name">czs0x55aa</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-魔法手环"><span class="nav-number">1.</span> <span class="nav-text">1.魔法手环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出"><span class="nav-number">1.1.</span> <span class="nav-text">输入输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">1.2.</span> <span class="nav-text">思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-分饼干"><span class="nav-number">2.</span> <span class="nav-text">2.分饼干</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出-1"><span class="nav-number">2.1.</span> <span class="nav-text">输入输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路-1"><span class="nav-number">2.2.</span> <span class="nav-text">思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-男女排队"><span class="nav-number">3.</span> <span class="nav-text">3.男女排队</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出-2"><span class="nav-number">3.1.</span> <span class="nav-text">输入输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路-2"><span class="nav-number">3.2.</span> <span class="nav-text">思路</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">czs0x55aa</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

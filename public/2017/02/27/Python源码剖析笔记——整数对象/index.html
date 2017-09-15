@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,学习笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="上一节Python源码剖析笔记——对象初探 结构1234typedef struct &amp;#123;	PyObject_HEAD	long ob_ival;&amp;#125; PyIntObject PyObject_HEAD里面包含了int类型的引用计数器ob_refcnt和_typeobject类型的用于存储类信息的结构体指针ob_type。对于整形对象而言，这里的ob_type指向的是一个PyInt">
+<meta name="keywords" content="Python,学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python源码剖析笔记——整数对象">
+<meta property="og:url" content="http://czs0x55aa.github.io/2017/02/27/Python源码剖析笔记——整数对象/index.html">
+<meta property="og:site_name" content="Naive">
+<meta property="og:description" content="上一节Python源码剖析笔记——对象初探 结构1234typedef struct &amp;#123;	PyObject_HEAD	long ob_ival;&amp;#125; PyIntObject PyObject_HEAD里面包含了int类型的引用计数器ob_refcnt和_typeobject类型的用于存储类信息的结构体指针ob_type。对于整形对象而言，这里的ob_type指向的是一个PyInt">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-12T08:14:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python源码剖析笔记——整数对象">
+<meta name="twitter:description" content="上一节Python源码剖析笔记——对象初探 结构1234typedef struct &amp;#123;	PyObject_HEAD	long ob_ival;&amp;#125; PyIntObject PyObject_HEAD里面包含了int类型的引用计数器ob_refcnt和_typeobject类型的用于存储类信息的结构体指针ob_type。对于整形对象而言，这里的ob_type指向的是一个PyInt">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://czs0x55aa.github.io/2017/02/27/Python源码剖析笔记——整数对象/"/>
+
+
+
+
+
+  <title>Python源码剖析笔记——整数对象 | Naive</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Naive</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/02/27/Python源码剖析笔记——整数对象/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="czs0x55aa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Naive">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python源码剖析笔记——整数对象</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-27T17:22:23+08:00">
+                2017-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上一节<a href="http://czs0x55aa.github.io/2017/02/27/Python%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%AF%B9%E8%B1%A1%E5%88%9D%E6%8E%A2/">Python源码剖析笔记——对象初探</a></p>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></div><div class="line">	PyObject_HEAD</div><div class="line">	<span class="keyword">long</span> ob_ival;</div><div class="line">&#125; PyIntObject</div></pre></td></tr></table></figure>
+<p>PyObject_HEAD里面包含了int类型的引用计数器ob_refcnt和_typeobject类型的用于存储类信息的结构体指针ob_type。<br>对于整形对象而言，这里的ob_type指向的是一个PyInt_Type对象。<br>ob_ival则用于存储实际的整数值。<br><a id="more"></a></p>
+<h2 id="PyInt-Type"><a href="#PyInt-Type" class="headerlink" title="PyInt_Type"></a>PyInt_Type</h2><p>PyInt_Type中包含了关于PyIntObject对象的诸多信息，以及PyIntObject对象所支持的操作。</p>
+<h2 id="PyIntObject对象的创建"><a href="#PyIntObject对象的创建" class="headerlink" title="PyIntObject对象的创建"></a>PyIntObject对象的创建</h2><p>Python提供了3中途径：<br><figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function">PyObject *<span class="title">PyInt_FromLong</span><span class="params">(<span class="keyword">long</span> ival)</span></span></div><div class="line"><span class="function">PyObject *<span class="title">PyInt_FromString</span><span class="params">(<span class="keyword">char</span> *s, <span class="keyword">char</span> **pend, <span class="keyword">int</span> base)</span></span></div><div class="line"><span class="function">PyObject *<span class="title">PyInt_FromUnicode</span><span class="params">(Py_UNICODE *s, <span class="keyword">int</span> length, <span class="keyword">int</span> base)</span></span></div></pre></td></tr></table></figure></p>
+<p>实际上，PyInt_FromString和PyInt_FromUnicode都是将其转化为长整形后再调用PyInt_FromLong的。<br>另外，在Python中的整数对象分为大整数和小整数，当创建对象对象时根据数值的大小区别处理。</p>
+<h1 id="小整数对象与大整数对象"><a href="#小整数对象与大整数对象" class="headerlink" title="小整数对象与大整数对象"></a>小整数对象与大整数对象</h1><h2 id="小整数对象"><a href="#小整数对象" class="headerlink" title="小整数对象"></a>小整数对象</h2><ul>
+<li>为什么小整数和大整数对象要分开对待呢？<br>这是因为在程序中小整数会被频繁的使用，为了提高性能，将小整数放在一个统一的块上进行管理。<br>可以试想一下在for循环的时候，常常会用到小整数。</li>
+<li>小整数和大整数的分界线在哪？<br>在源码中有如下的定义:<figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> NSMALLPOSINTS</span></div><div class="line">	<span class="meta">#<span class="meta-keyword">define</span> NSMALLPOSINTS		257</span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> NSMALLNEGINTS</span></div><div class="line">	<span class="meta">#<span class="meta-keyword">define</span> NSMALLNEGINTS		-5</span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">if</span> NSMALLNEGINTS + NSMALLPOSTINTS &gt; 0</span></div><div class="line">	<span class="keyword">static</span> PyIntObject *small_ints[NSMALLNEGINTS + NSMALLPOSTINTS]</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>可以看到小整数的默认定义范围是[-5, 257)。<br>小整数的这块空间是在Python初始化的时候创建的，并且不会被销毁，直到Python程序结束。</p>
+<h2 id="大整数对象"><a href="#大整数对象" class="headerlink" title="大整数对象"></a>大整数对象</h2><p>除了小整数外的其他整数，Python运行环境提供了一块内存空间，这些空间供大整数轮流使用。<br>其底层使用了一个PyIntBlock的结构：<br><figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">intblock</span> &#123;</span></div><div class="line">	<span class="class"><span class="keyword">struct</span> _<span class="title">intblock</span> *<span class="title">next</span>;</span></div><div class="line">	PyIntObject objects[N_INTOBJECTS];</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>next指针用构建PyIntBlock的单链表。<br>objects数组则用于存储PyIntObject。  </p>
+<ul>
+<li>这些整数对象是如何进行管理的呢？<br>在Python中，通过一个block_list指针来维护多个PyIntBlock。<br>另外还有一个free_list指针来维护空闲的空间，即串联了objects数组，构成一个单链表。</li>
+<li>对象的添加<br>当创建一个新对象的时候，从free_list中申请走一个单位的空间，free_list指向下一个空闲单位。</li>
+<li>对象的删除<br>当删除一个对象的时候，这个单位的空间再次由free_list接管。</li>
+</ul>
+<h1 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h1><p>大整数的对象池由block_list维护，当一个Block用完后会向系统申请新的Block，但是申请后的Block即使其objects数组中都是空的（申请又销毁过），也不会对其释放Block。<br>也就是说Pythony一旦运行后，PyIntBlock对象的数量只会增加不会减少，这有点类似于内存泄漏。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/27/Python源码剖析笔记——对象初探/" rel="next" title="Python源码剖析笔记——对象初探">
+                <i class="fa fa-chevron-left"></i> Python源码剖析笔记——对象初探
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/25/2017网易实习生编程题-笔记/" rel="prev" title="2017网易实习生编程题-笔记">
+                2017网易实习生编程题-笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="czs0x55aa" />
+          <p class="site-author-name" itemprop="name">czs0x55aa</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#结构"><span class="nav-number">1.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PyInt-Type"><span class="nav-number">2.</span> <span class="nav-text">PyInt_Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PyIntObject对象的创建"><span class="nav-number">3.</span> <span class="nav-text">PyIntObject对象的创建</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小整数对象与大整数对象"><span class="nav-number"></span> <span class="nav-text">小整数对象与大整数对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#小整数对象"><span class="nav-number">1.</span> <span class="nav-text">小整数对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大整数对象"><span class="nav-number">2.</span> <span class="nav-text">大整数对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#存在的问题"><span class="nav-number"></span> <span class="nav-text">存在的问题</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">czs0x55aa</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

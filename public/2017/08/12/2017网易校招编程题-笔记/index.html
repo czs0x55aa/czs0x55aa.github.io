@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="零碎记录," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="对网易有一种莫名的执着,然而感觉这次笔试又跪了 1. 独立的小易 小易为了向他的父母表现他已经长大独立了,他决定搬出去自己居住一段时间。一个人生活增加了许多花费: 小易每天必须吃一个水果并且需要每天支付x元的房屋租金。当前小易手中已经有f个水果和d元钱,小易也能去商店购买一些水果,商店每个水果售卖p元。小易为了表现他独立生活的能力,希望能独立生活的时间越长越好,小易希望你来帮他计算一下他最多能独立">
+<meta name="keywords" content="零碎记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2017网易校招编程题-笔记">
+<meta property="og:url" content="http://czs0x55aa.github.io/2017/08/12/2017网易校招编程题-笔记/index.html">
+<meta property="og:site_name" content="Naive">
+<meta property="og:description" content="对网易有一种莫名的执着,然而感觉这次笔试又跪了 1. 独立的小易 小易为了向他的父母表现他已经长大独立了,他决定搬出去自己居住一段时间。一个人生活增加了许多花费: 小易每天必须吃一个水果并且需要每天支付x元的房屋租金。当前小易手中已经有f个水果和d元钱,小易也能去商店购买一些水果,商店每个水果售卖p元。小易为了表现他独立生活的能力,希望能独立生活的时间越长越好,小易希望你来帮他计算一下他最多能独立">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-12T08:14:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2017网易校招编程题-笔记">
+<meta name="twitter:description" content="对网易有一种莫名的执着,然而感觉这次笔试又跪了 1. 独立的小易 小易为了向他的父母表现他已经长大独立了,他决定搬出去自己居住一段时间。一个人生活增加了许多花费: 小易每天必须吃一个水果并且需要每天支付x元的房屋租金。当前小易手中已经有f个水果和d元钱,小易也能去商店购买一些水果,商店每个水果售卖p元。小易为了表现他独立生活的能力,希望能独立生活的时间越长越好,小易希望你来帮他计算一下他最多能独立">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://czs0x55aa.github.io/2017/08/12/2017网易校招编程题-笔记/"/>
+
+
+
+
+
+  <title>2017网易校招编程题-笔记 | Naive</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Naive</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/08/12/2017网易校招编程题-笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="czs0x55aa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Naive">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2017网易校招编程题-笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T21:21:21+08:00">
+                2017-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>对网易有一种莫名的执着,然而感觉这次笔试又跪了</p>
+<h2 id="1-独立的小易"><a href="#1-独立的小易" class="headerlink" title="1. 独立的小易"></a>1. 独立的小易</h2><blockquote>
+<p>小易为了向他的父母表现他已经长大独立了,他决定搬出去自己居住一段时间。一个人生活增加了许多花费: 小易每天必须吃一个水果并且需要每天支付x元的房屋租金。当前小易手中已经有f个水果和d元钱,小易也能去商店购买一些水果,商店每个水果售卖p元。小易为了表现他独立生活的能力,希望能独立生活的时间越长越好,小易希望你来帮他计算一下他最多能独立生活多少天。<br>输入描述：<br>输入包括一行,四个整数x, f, d, p(1 ≤ x,f,d,p ≤ 2 * 10^9),以空格分割<br>输出描述：<br>输出一个整数, 表示小易最多能独立生活多少天。</p>
+</blockquote>
+<p>难得遇到一个送分题…<br><a id="more"></a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        str = raw_input()</div><div class="line">        x, f, d, p = [int(x) <span class="keyword">for</span> x <span class="keyword">in</span> str.split()]</div><div class="line">        ans = <span class="number">0</span></div><div class="line">        <span class="keyword">if</span> x * f &gt;= d:</div><div class="line">            <span class="keyword">print</span> int(d/ x)</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            d -= (x * f)</div><div class="line">            <span class="keyword">print</span> f + int(d/(p+x))</div><div class="line">    <span class="keyword">except</span> EOFError:</div><div class="line">        <span class="keyword">break</span></div></pre></td></tr></table></figure></p>
+<h2 id="2-堆棋子"><a href="#2-堆棋子" class="headerlink" title="2. 堆棋子"></a>2. 堆棋子</h2><blockquote>
+<p>小易将n个棋子摆放在一张无限大的棋盘上。第i个棋子放在第x[i]行y[i]列。同一个格子允许放置多个棋子。每一次操作小易可以把一个棋子拿起并将其移动到原格子的上、下、左、右的任意一个格子中。小易想知道要让棋盘上出现有一个格子中至少有i(1 ≤ i ≤ n)个棋子所需要的最少操作次数.<br>输入描述：<br>输入包括三行,第一行一个整数n(1 ≤ n ≤ 50),表示棋子的个数<br>第二行为n个棋子的横坐标x<a href="1 ≤ x[i] ≤ 10^9">i</a><br>第三行为n个棋子的纵坐标y<a href="1 ≤ y[i] ≤ 10^9">i</a><br>输出描述：<br>输出n个整数,第i个表示棋盘上有一个格子至少有i个棋子所需要的操作数,以空格分割。行末无空格<br>如样例所示:<br>对于1个棋子: 不需要操作<br>对于2个棋子: 将前两个棋子放在(1, 1)中<br>对于3个棋子: 将前三个棋子放在(2, 1)中<br>对于4个棋子: 将所有棋子都放在(3, 1)中</p>
+</blockquote>
+<p>假设棋子A和B，坐标分别为(xa, ya)和(xb, yb)，那么这两个棋子重叠需要的最少移动次数为<code>abs(xa-xb)+abs(ya-yb)</code>。<br><strong>先说一个错误的思路</strong>，因为棋子的数量很少，所以求所有棋子两两的距离。比如求出所有棋子到一个棋子A的距离，可以对得到的距离数组排序，意味着以A坐标为中心，其他棋子移到该位置的最小距离。如果求以A为中心重叠k个棋子的情况，就可以求排序后最小的k个元素和。<br>对于所有棋子来说，k个重叠的最小值，可以按照上述方式求取最小值。<br>然而这种方式是错误的，只能过掉50%的样例，测试数据还算仁慈。<br>因为这个思路有个不成立的假设，既默认了最少的操作次数一定是以已有棋子的位置为中心，然而实际上并不一定是这样。比如三个点成三角形的分布的时候。<br>如果能解决掉上面这个不成立的假设，这个思路仍然是可行的，那么问题就是除了有棋子的点，到底哪些点应该被考虑进来。<br>简化问题：<br>1.已知n个点的坐标，求一个点(x,y)，使得这个点到其他n个点的曼哈顿距离之和最小。<br>2.已知直线上的n个点，求一个点x，使得这个点到n个点的距离之和最小。<br>问题2的答案是取坐标的中位数，对于问题1来说，x轴和y轴单独拿出来讨论就是问题1，因此问题1的答案是分别取x和y的中位点。<br>通过这两个简化的问题，可以推知，当给定n个点，其最短距离的选点(x, y)，这里的x和y一定来自原于给定点集中的。例如n个点，那么答案x,y一定在大小为n^2的扩展点集中。<br>由于题目只有50个点，所以这个扩展出来的点集最多只有2500个点，完全可以用枚举解决。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        n = int(raw_input())</div><div class="line">        str1 = raw_input()</div><div class="line">        str2 = raw_input()</div><div class="line">        xs = [int(x) <span class="keyword">for</span> x <span class="keyword">in</span> str1.split()]</div><div class="line">        ys = [int(y) <span class="keyword">for</span> y <span class="keyword">in</span> str2.split()]</div><div class="line">        points = zip(xs, ys)</div><div class="line">        whole = [(x, y) <span class="keyword">for</span> x <span class="keyword">in</span> xs <span class="keyword">for</span> y <span class="keyword">in</span> ys]</div><div class="line">        dis = []</div><div class="line">        <span class="keyword">for</span> a, b <span class="keyword">in</span> whole:</div><div class="line">            tmp_dis = []</div><div class="line">            <span class="keyword">for</span> c, d <span class="keyword">in</span> points:</div><div class="line">                tmp_dis.append(abs(a-c) + abs(b-d))</div><div class="line">            tmp_dis.sort()</div><div class="line">            new_list = []</div><div class="line">            d = <span class="number">0</span></div><div class="line">            <span class="keyword">for</span> x <span class="keyword">in</span> tmp_dis:</div><div class="line">                d += x</div><div class="line">                new_list.append(d)</div><div class="line">            dis.append(new_list)</div><div class="line">        ans = [<span class="number">0</span>] * n;</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>, n+<span class="number">1</span>):</div><div class="line">            ans[i<span class="number">-1</span>] = min(li[i<span class="number">-1</span>] <span class="keyword">for</span> li <span class="keyword">in</span> dis);</div><div class="line">        <span class="keyword">print</span> <span class="string">' '</span>.join([str(v) <span class="keyword">for</span> v <span class="keyword">in</span> ans])</div><div class="line">    <span class="keyword">except</span> EOFError:</div><div class="line">        <span class="keyword">break</span></div></pre></td></tr></table></figure></p>
+<h2 id="3-小易喜欢的数列"><a href="#3-小易喜欢的数列" class="headerlink" title="3. 小易喜欢的数列"></a>3. 小易喜欢的数列</h2><blockquote>
+<p>小易非常喜欢拥有以下性质的数列:<br>1、数列的长度为n<br>2、数列中的每个数都在1到k之间(包括1和k)<br>3、对于位置相邻的两个数A和B(A在B前),都满足(A &lt;= B)或(A mod B != 0)(满足其一即可)<br>例如,当n = 4, k = 7<br>那么{1,7,7,2},它的长度是4,所有数字也在1到7范围内,并且满足第三条性质,所以小易是喜欢这个数列的<br>但是小易不喜欢{4,4,4,2}这个数列。小易给出n和k,希望你能帮他求出有多少个是他会喜欢的数列。<br>输入描述：<br>输入包括两个整数n和k(1 ≤ n ≤ 10, 1 ≤ k ≤ 10^5)<br>输出描述：<br>输出一个整数,即满足要求的数列个数,因为答案可能很大,输出对1,000,000,007取模的结果。</p>
+</blockquote>
+<p>(╯‵□′)╯︵┻━┻又不会做….<br>前两个条件很容易满足，但是第三个条件处理起来感觉有点麻烦。<br>不完整的思路：因为数列长度，和每个数的可取范围是已知的，那么不考虑条件3的数列总数是可以求的（n的k次方）。满足条件3的我不知道怎么求，于是想它的反命题，可以描述为数列中两个相邻元素A,B，满足 A%B == 0，取反的话似乎好求一些。<br>比如A是4，那么B如果是1、2就满足条件3的反命题，可以使用求素数的打表发，求出每个数的后一个数不满足条件3的情况数量。<br>对于数列长度n，那么相邻的情况就有n-1种，每种相邻不满足条件3的情况可以用上述打表结果和相乘。<br>如果这个求法正确的，算出满足条件1和2的所有数列，减去不满足条件3的数列数量，结果应该就是答案了。<br>然而结果还是不对(╯‵□′)╯︵┻━┻，没想清楚是思路本身的问题，还是在求解不满足条件3时出错了。<br>丢个错误代码，只过了30%的数据。<br><figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="keyword">int</span> n, k;</div><div class="line"><span class="keyword">int</span> tab[<span class="number">100001</span>];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="comment">// freopen("input.txt", "r", stdin);</span></div><div class="line">    <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;n, &amp;k) != EOF)&#123;</div><div class="line">        <span class="built_in">memset</span>(tab, <span class="number">0</span>, <span class="keyword">sizeof</span>(tab));</div><div class="line">        <span class="keyword">int</span> len = k/ <span class="number">2</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= len; ++i)&#123;</div><div class="line">            <span class="keyword">int</span> tmp = <span class="number">2</span> * i;</div><div class="line">            <span class="keyword">while</span>(tmp &lt;= k)&#123;</div><div class="line">                tab[tmp] += <span class="number">1</span>;</div><div class="line">                tmp += i;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">long</span> <span class="keyword">long</span> total = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= k; ++i)</div><div class="line">            total += tab[i];</div><div class="line">        <span class="keyword">long</span> <span class="keyword">long</span> error_time = <span class="number">1</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i)&#123;</div><div class="line">            error_time = (error_time * total) % <span class="number">1000000007</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">long</span> <span class="keyword">long</span> all = <span class="number">1</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i)&#123;</div><div class="line">            all = (all * k) % <span class="number">1000000007</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// printf("%lld %lld\n", all, error_time);</span></div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>, all - error_time);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/零碎记录/" rel="tag"># 零碎记录</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/" rel="next" title="[译]Keras Tutorial - Spoken Language Understanding">
+                <i class="fa fa-chevron-left"></i> [译]Keras Tutorial - Spoken Language Understanding
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/24/记cx-Oracle读写中文的编码问题/" rel="prev" title="记cx_Oracle读写中文的编码问题">
+                记cx_Oracle读写中文的编码问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="czs0x55aa" />
+          <p class="site-author-name" itemprop="name">czs0x55aa</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-独立的小易"><span class="nav-number">1.</span> <span class="nav-text">1. 独立的小易</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-堆棋子"><span class="nav-number">2.</span> <span class="nav-text">2. 堆棋子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-小易喜欢的数列"><span class="nav-number">3.</span> <span class="nav-text">3. 小易喜欢的数列</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">czs0x55aa</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="学习笔记,机器学习," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="背景前不久facebook开源了一个fastText工具，最近在网上传的挺火。相关论文：[1] P. Bojanowski, E. Grave, A. Joulin, T. Mikolov, Enriching Word Vectors with Subword Information[2] A. Joulin, E. Grave, P. Bojanowski, T. Mikolov, Bag o">
+<meta name="keywords" content="学习笔记,机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fastText文本分类实践">
+<meta property="og:url" content="http://czs0x55aa.github.io/2016/09/26/fastText文本分类实践/index.html">
+<meta property="og:site_name" content="Naive">
+<meta property="og:description" content="背景前不久facebook开源了一个fastText工具，最近在网上传的挺火。相关论文：[1] P. Bojanowski, E. Grave, A. Joulin, T. Mikolov, Enriching Word Vectors with Subword Information[2] A. Joulin, E. Grave, P. Bojanowski, T. Mikolov, Bag o">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://czs0x55aa.github.io/2016/09/26/fastText文本分类实践/fastText文本分类实践/learning-curve.png">
+<meta property="og:updated_time" content="2017-09-12T08:14:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fastText文本分类实践">
+<meta name="twitter:description" content="背景前不久facebook开源了一个fastText工具，最近在网上传的挺火。相关论文：[1] P. Bojanowski, E. Grave, A. Joulin, T. Mikolov, Enriching Word Vectors with Subword Information[2] A. Joulin, E. Grave, P. Bojanowski, T. Mikolov, Bag o">
+<meta name="twitter:image" content="http://czs0x55aa.github.io/2016/09/26/fastText文本分类实践/fastText文本分类实践/learning-curve.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://czs0x55aa.github.io/2016/09/26/fastText文本分类实践/"/>
+
+
+
+
+
+  <title>fastText文本分类实践 | Naive</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Naive</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/09/26/fastText文本分类实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="czs0x55aa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Naive">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">fastText文本分类实践</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-26T15:02:35+08:00">
+                2016-09-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前不久facebook开源了一个fastText工具，最近在网上传的挺火。<br>相关论文：<br>[1] P. Bojanowski<em>, E. Grave</em>, A. Joulin, T. Mikolov, <a href="https://arxiv.org/pdf/1607.04606v1.pdf" target="_blank" rel="external">Enriching Word Vectors with Subword Information</a><br>[2] A. Joulin, E. Grave, P. Bojanowski, T. Mikolov, <a href="https://arxiv.org/pdf/1607.01759v2.pdf" target="_blank" rel="external">Bag of Tricks for Efficient Text Classification</a><br>第一篇还没看，粗读了第二篇，fastText使用的模型和word2vec的模型确实很相似，论文中对模型的描述比较少（可能大牛觉得模型太简单了..）<br>论文给的实验结果来看也很漂亮，性能上比较了几个复杂的模型，准确率很相近，训练时间是一大亮点。<br>不过网上对该论文的评价不是很高，可能因为论文整体好像没有多少创新吧，我这样的菜鸡读过后的感觉就是简化了已有的模型跑出了不错的效果。<br>由于看起来性能和训练时间确实都不错，还是决定拿来跑一下。<br><a id="more"></a></p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>由于不熟悉C++，在github上找了一个python版本的fastText：<a href="https://github.com/salestock/fastText.py" target="_blank" rel="external">https://github.com/salestock/fastText.py</a><br>在ubuntu上直接pip安装很顺利（PS：自己在win上安装会出错，好像和旧的VS版本不支持C99有关）<br>训练语料用的精简的搜狗新闻语料，貌似这个版本官网上找不到了，从百度网盘找到的资源：<a href="http://pan.baidu.com/s/1nvsBm5r" target="_blank" rel="external">http://pan.baidu.com/s/1nvsBm5r</a><br>分词使用了jieba：<a href="https://github.com/fxsjy/jieba" target="_blank" rel="external">https://github.com/fxsjy/jieba</a><br>新闻语料总共有9个类别，我从每个类别提取了100篇文章。按照fastText的输入要求，每行一句话（经过分词），并且加上类别标签，创建了一个大约3.M的训练集。<br>训练集的格式：</p>
+<blockquote>
+<p>一家 刚刚 成立 两年 的 网络 支付 公司 它 的 目标 是 成为 市值 亿美元 的 上市公司 __label<strong>C000008<br>三是 对 霍尔木兹海峡 马六甲海峡 等 实施 控制 战时 实施 有效 的 海上 封锁 \</strong>label<strong>C000024<br>这个 一向 自视 极高 并 被 族人 寄予厚望 的 人 精神 心理 受 的 打击 很大 \</strong>label__C000023<br>…</p>
+</blockquote>
+<p>其中<strong>label</strong>是类别前缀，这个前缀可以自定义。<br>自己构造的这3.5M数据中大概有26000+的样本。<br>由于新闻语料中带有一些记者信息，例如“本报记者 XXX..报道”这样的句子，这种语句样本对分类任务来说明显是干扰项，由于这类句子的格式不统一，这里没有做过滤。另外这种样本的数量对总训练集来说很少，应该对结果影响应该很小。</p>
+<h2 id="分类实验"><a href="#分类实验" class="headerlink" title="分类实验"></a>分类实验</h2><p>将数据集分成7:3的比例，前面用来训练，后面用来验证模型。<br>算法默认的迭代次数是5，尝试了几次发现10-30比较合适，在验证集上的准确率在78%左右。<br>python代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fasttext_test</span><span class="params">(epoch=<span class="number">20</span>)</span>:</span></div><div class="line">    classifier = fasttext.supervised(<span class="string">'/home/czs0x55aa/fasttext/data.train.txt'</span>, <span class="string">'model'</span>, epoch=epoch)</div><div class="line">    res = classifier.test(<span class="string">'/home/czs0x55aa/fasttext/data.test.txt'</span>)</div><div class="line">    <span class="keyword">print</span> res.precision</div><div class="line">    <span class="keyword">return</span> res.precision</div></pre></td></tr></table></figure></p>
+<p><img src="fastText文本分类实践/learning-curve.png" alt=""><br>总样本就是之前说过的26000+，横坐标是使用的训练样本的比例，验证的样本数量为剩余中随机选取的500个。<br>从0.7后面下降的位置实际上是不太合理的，因为算法接口的原因，这张图绘制的时候每次都是经过重新采样学习的，有一定的误差在里面。<br>但是总体上看1W多样本的时候已经接近78%的准确率了，后续增加样本基本不起作用，实际情况和语料还是有一定关系的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在搜狗新闻语料的9分类任务上准确率大约是78%，由于以前没研究过文本分类，对这个准确率好坏没有很直观的感受。<br>纯粹从个人角度看觉得效果还是可以的，因为该算法是对每一句预测标签的，然而一些句子信息可能本身就是中性的，所以如果在文章分类任务中，可能将句子的标签再做投票选择最高的，或者从概率层面做进一步的处理，最终的效果可能会更好。<br>另外一点感受就是，这个算法用起来是真方便，中文分完词丢进去就可以了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/17/机器学习中改进模型的方法/" rel="next" title="机器学习中改进模型的方法">
+                <i class="fa fa-chevron-left"></i> 机器学习中改进模型的方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/20/ubuntu16-04-CUDA-Tensorflow-Keras环境搭建/" rel="prev" title="ubuntu16.04+CUDA+Tensorflow+Keras环境搭建">
+                ubuntu16.04+CUDA+Tensorflow+Keras环境搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="czs0x55aa" />
+          <p class="site-author-name" itemprop="name">czs0x55aa</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分类实验"><span class="nav-number">3.</span> <span class="nav-text">分类实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">czs0x55aa</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

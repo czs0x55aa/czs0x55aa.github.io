@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,学习笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="笔记说明该笔记是对《Python源码剖析》学习过程的记录，这本书有点老了，源码是2.5版本的。由于阅读的时候比较仓促，并没有与目前2.7的源码做比较，里面的一些细节可能过时了。该笔记以整体概念的记录和梳理为主，忽略了书中的一些实现细节的介绍。 基本概念梳理PyObjectPython中所有的东西都是对象，所有的对象都拥有一些相同的内容，这些内容定义在PyObject中123typedef stru">
+<meta name="keywords" content="Python,学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python源码剖析笔记——对象初探">
+<meta property="og:url" content="http://czs0x55aa.github.io/2017/02/27/Python源码剖析笔记——对象初探/index.html">
+<meta property="og:site_name" content="Naive">
+<meta property="og:description" content="笔记说明该笔记是对《Python源码剖析》学习过程的记录，这本书有点老了，源码是2.5版本的。由于阅读的时候比较仓促，并没有与目前2.7的源码做比较，里面的一些细节可能过时了。该笔记以整体概念的记录和梳理为主，忽略了书中的一些实现细节的介绍。 基本概念梳理PyObjectPython中所有的东西都是对象，所有的对象都拥有一些相同的内容，这些内容定义在PyObject中123typedef stru">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-12T08:14:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python源码剖析笔记——对象初探">
+<meta name="twitter:description" content="笔记说明该笔记是对《Python源码剖析》学习过程的记录，这本书有点老了，源码是2.5版本的。由于阅读的时候比较仓促，并没有与目前2.7的源码做比较，里面的一些细节可能过时了。该笔记以整体概念的记录和梳理为主，忽略了书中的一些实现细节的介绍。 基本概念梳理PyObjectPython中所有的东西都是对象，所有的对象都拥有一些相同的内容，这些内容定义在PyObject中123typedef stru">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://czs0x55aa.github.io/2017/02/27/Python源码剖析笔记——对象初探/"/>
+
+
+
+
+
+  <title>Python源码剖析笔记——对象初探 | Naive</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Naive</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/02/27/Python源码剖析笔记——对象初探/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="czs0x55aa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Naive">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python源码剖析笔记——对象初探</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-27T16:39:13+08:00">
+                2017-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="笔记说明"><a href="#笔记说明" class="headerlink" title="笔记说明"></a>笔记说明</h1><p>该笔记是对《Python源码剖析》学习过程的记录，这本书有点老了，源码是2.5版本的。由于阅读的时候比较仓促，并没有与目前2.7的源码做比较，里面的一些细节可能过时了。<br>该笔记以整体概念的记录和梳理为主，忽略了书中的一些实现细节的介绍。</p>
+<h1 id="基本概念梳理"><a href="#基本概念梳理" class="headerlink" title="基本概念梳理"></a>基本概念梳理</h1><h2 id="PyObject"><a href="#PyObject" class="headerlink" title="PyObject"></a>PyObject</h2><p>Python中所有的东西都是对象，所有的对象都拥有一些相同的内容，这些内容定义在PyObject中<br><figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">object</span>&#123;</span></div><div class="line">	PyObject_HEAD</div><div class="line">&#125; PyObject;</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>PyObject_HEAD是一个宏定义，实际发布的Python中，PyObject的定义是长成下面这样的。<br><figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">object</span>&#123;</span></div><div class="line">	<span class="keyword">int</span> ob_refcnt;</div><div class="line">	<span class="class"><span class="keyword">struct</span> _<span class="title">typeobject</span> *<span class="title">ob_type</span>;</span></div><div class="line">&#125; PyObject;</div></pre></td></tr></table></figure></p>
+<p>ob_refcnt：引用计数器<br>ob_type:类型信息,_typeobject的结构相对复杂，后续会进一步描述。</p>
+<h2 id="定长对象和变长对象"><a href="#定长对象和变长对象" class="headerlink" title="定长对象和变长对象"></a>定长对象和变长对象</h2><p>实际上，上面提到的PyObject是用来描述定长对象的，还有些对象是变长的，例如字符串，list等<br>两者的区别在于，定长对象的不同对象占用的内存大小是一样的（整数对象不论大小，占用相同的内存），而变长对象的不同对象占用的内存可能是不一样的（字符串有长有短）。<br><strong>Python中使用PyObject表示定长对象，PyVarObject表示变长对象，他们的宏分别是PyObject_HEAD和PyObject_VAR_HEAD</strong><br>变长对象PyVarObject的定义如下<br><figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> PyObject_VAR_HEAD</span></div><div class="line">	PyObject_HEAD</div><div class="line">	<span class="keyword">int</span> ob_size;</div><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></div><div class="line">	PyObject_VAR_HEAD</div><div class="line">&#125; PyVarObject;</div></pre></td></tr></table></figure></p>
+<p>与PyObject相比，只是多了一个ob_size，用来指明变长对象中一共容纳了多少个元素。<br>可以看出，不论是定长对象还是变长对象，都拥有相同的对象头部。<br>所以我们只需要用一个PyObject*指针就可以引用任意的一个对象。</p>
+<h2 id="typeobject"><a href="#typeobject" class="headerlink" title="_typeobject"></a>_typeobject</h2><figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">typeobject</span> &#123;</span></div><div class="line">	PyObject_VAR_HEAD</div><div class="line">	<span class="keyword">char</span> *tp_name;</div><div class="line">	<span class="keyword">int</span> tp_basicsize, tp_itemsize;</div><div class="line"></div><div class="line">	destructor tp_dealloc;</div><div class="line">	printfun tp_print;</div><div class="line">	...</div><div class="line"></div><div class="line">	hashfunc tp_hash;</div><div class="line">	ternaryfunc tp_call;</div><div class="line">	...</div><div class="line">&#125; PyTypeObject;</div></pre></td></tr></table></figure>
+<p>_typeobject中包含了许多信息，主要可以分为四类：</p>
+<ul>
+<li>类型名，tp_name，主要是Python内部以及调试的时候使用</li>
+<li>创建该类型对象时分配内存空间大小的信息，即tp_basicsize和tp_itemsize</li>
+<li>与该类型对象相关联的操作信息</li>
+<li>类型信息</li>
+</ul>
+<p>有趣的是，在PyTypeObjec定义的头部，也有一个PyObject_VAR_HEAD，<strong>这意味着Python中的类型实际也是一个变长对象</strong>。</p>
+<ul>
+<li>任何东西都是对象，每一个对象都对应了一种类型</li>
+<li>类型也是一种对象<br>那么类型对象PyTypeObject中的ob_type又要指向谁呢？<br>嗯，这时候需要<strong>PyType_Type</strong>出场了<figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> PyObject_HEAD_INIT(type)  \</span></div><div class="line">	_PyObject_EXTRA_INIT	\</div><div class="line">	<span class="number">1</span>, type,</div><div class="line"></div><div class="line">PyTypeObject PyType_Type = &#123;</div><div class="line">	PyObject_HEAD_INIT(&amp;PyType_Type)</div><div class="line">	<span class="number">0</span>,	<span class="comment">// ob_size</span></div><div class="line">	<span class="string">"type"</span>,	<span class="comment">// tp_name</span></div><div class="line">	<span class="keyword">sizeof</span>(PyHeapTypeObject),	<span class="comment">// tp_basicsize</span></div><div class="line">	<span class="keyword">sizeof</span>(PyMemberDef),	<span class="comment">// tp_itemsize</span></div><div class="line">	......</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>实际上PyType_Type只是一个特殊的PyTypeObject，它的ob_type是指向自身的。<br>在Python中，通过 int.<strong>class</strong> 能看到 <type 'type'=""><br>这个 <type 'type'=""> 是所有class的class， 在Python中被称为metaclass。<br>在Python中实例化一个整数对象时，这个整数对象的ob_type会指向一个PyInt_Type对象（这也是个PyTypeObject），而这个PyInt_Type中的ob_type则会指向PyType_type。<br>PyObject中的ob_refecnt用来计数对象的引用次数，当引用次数为0时则调用类型对象中的tp_dealloc函数，但是PyType_Type是个例外，它永远不会被销毁。</type></type></p>
+<h2 id="可变对象和不可变对象"><a href="#可变对象和不可变对象" class="headerlink" title="可变对象和不可变对象"></a>可变对象和不可变对象</h2><p>上面已经提过了定长对象和变长对象，根据对象维护数据的可变性还可以划分出可变对象和不可变对象。<br>比如int对象，它是定长的，且不可变的<br>又比如str和tuple，它是变长的，但是不可变<br>再比如list，它是变长的，又是可变的<br>（定长对象中，是否有可变的呢？）</p>
+<h2 id="Python对象的分类"><a href="#Python对象的分类" class="headerlink" title="Python对象的分类"></a>Python对象的分类</h2><p>Python中的对象大致可以分为5类，这种分类方式不是绝对的</p>
+<ul>
+<li>Fundamental对象：类型对象</li>
+<li>Numeric对象：数值对象</li>
+<li>Sequence对象：容纳其他对象的序列集合对象</li>
+<li>Mapping对象：类似于C++中map的关联对象</li>
+<li>Internal对象：Python虚拟机在运行时内部使用的对象<br>书中的后续集几章节分别对这几种对象类型进行了阐述。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/20/ubuntu16-04-CUDA-Tensorflow-Keras环境搭建/" rel="next" title="ubuntu16.04+CUDA+Tensorflow+Keras环境搭建">
+                <i class="fa fa-chevron-left"></i> ubuntu16.04+CUDA+Tensorflow+Keras环境搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/27/Python源码剖析笔记——整数对象/" rel="prev" title="Python源码剖析笔记——整数对象">
+                Python源码剖析笔记——整数对象 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="czs0x55aa" />
+          <p class="site-author-name" itemprop="name">czs0x55aa</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#笔记说明"><span class="nav-number">1.</span> <span class="nav-text">笔记说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念梳理"><span class="nav-number">2.</span> <span class="nav-text">基本概念梳理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PyObject"><span class="nav-number">2.1.</span> <span class="nav-text">PyObject</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定长对象和变长对象"><span class="nav-number">2.2.</span> <span class="nav-text">定长对象和变长对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#typeobject"><span class="nav-number">2.3.</span> <span class="nav-text">_typeobject</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变对象和不可变对象"><span class="nav-number">2.4.</span> <span class="nav-text">可变对象和不可变对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python对象的分类"><span class="nav-number">2.5.</span> <span class="nav-text">Python对象的分类</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">czs0x55aa</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
