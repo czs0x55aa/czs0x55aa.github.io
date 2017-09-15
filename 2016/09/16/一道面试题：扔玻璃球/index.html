@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="零碎记录," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="前些天很多研三的师兄在刷线上的笔试题，看到腾讯的一道简答题，挺有意思的。当时没想明白，事后查了一下网上的资料，自己又重新思考了一下。这道题之前似乎被很多公司用过。这道题网上有很多的解析，但是几乎都是复制来复制去，完全相同的方法思路。不得不说这是一种互联网信息的病态。">
+<meta name="keywords" content="零碎记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一道面试题：扔玻璃球">
+<meta property="og:url" content="http://czs0x55aa.github.io/2016/09/16/一道面试题：扔玻璃球/index.html">
+<meta property="og:site_name" content="Naive">
+<meta property="og:description" content="前些天很多研三的师兄在刷线上的笔试题，看到腾讯的一道简答题，挺有意思的。当时没想明白，事后查了一下网上的资料，自己又重新思考了一下。这道题之前似乎被很多公司用过。这道题网上有很多的解析，但是几乎都是复制来复制去，完全相同的方法思路。不得不说这是一种互联网信息的病态。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-12T08:14:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一道面试题：扔玻璃球">
+<meta name="twitter:description" content="前些天很多研三的师兄在刷线上的笔试题，看到腾讯的一道简答题，挺有意思的。当时没想明白，事后查了一下网上的资料，自己又重新思考了一下。这道题之前似乎被很多公司用过。这道题网上有很多的解析，但是几乎都是复制来复制去，完全相同的方法思路。不得不说这是一种互联网信息的病态。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://czs0x55aa.github.io/2016/09/16/一道面试题：扔玻璃球/"/>
+
+
+
+
+
+  <title>一道面试题：扔玻璃球 | Naive</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Naive</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/09/16/一道面试题：扔玻璃球/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="czs0x55aa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Naive">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">一道面试题：扔玻璃球</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-16T14:50:35+08:00">
+                2016-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前些天很多研三的师兄在刷线上的笔试题，看到腾讯的一道简答题，挺有意思的。<br>当时没想明白，事后查了一下网上的资料，自己又重新思考了一下。这道题之前似乎被很多公司用过。<br>这道题网上有很多的解析，但是几乎都是复制来复制去，完全相同的方法思路。不得不说这是一种互联网信息的病态。<br><a id="more"></a></p>
+<hr>
+<p>原题描述如下：<br>某幢大楼有100层。你手里有两颗一模一样的玻璃珠。当你拿着玻璃珠在某一层往下扔的时候，一定会有两个结果，玻璃珠碎了或者没碎。这幢大楼有个临界楼层。低于它的楼层，往下扔玻璃珠，玻璃珠不会碎，等于或高于它的楼层，扔下玻璃珠，玻璃珠一定会碎。玻璃珠碎了就不能再扔。现在让你设计一种方式，使得在该方式下，最坏的情况扔的次数比其他任何方式最坏的次数都少。也就是设计一种最有效的方式。<br>（腾讯的简答题中照搬了原题，只改了下楼层数）</p>
+<hr>
+<p>自己的读完题的第一感觉：<br>应该很多人和我一样，第一反应是二分法，基于两点：<br>1.楼层号是有序的，有序是二分法有效的前提<br>2.要找到一个确定的楼层号<br>但是仔细读题，重要的题目条件是玻璃球只有2个，碎了就没了，二分查找卒。<br>可以肯定的结论是：一旦第一个球碎了，那之后就只能从已知安全的最低楼层一直到第一个球碎了的楼层，从下 往上逐一尝试，直到找到为止。<br>如果按照二分，第一次在50楼，如果球碎了，那就得从1楼开始，最坏情况需要1+49次，感觉这明显不是正确答案。<br>其实思路还是被二分约束住了，想来想去也没有好的思路。</p>
+<hr>
+<p>事后看了网上的答案分析，千遍一律的使用DP的思想。<br>这个想法大致可以描述如下（具体思路可以看底部给的链接）：<br>选定一个楼层n，从n丢下去有2种情况：<br>1.球碎了，那就从最下面到n-1层依次尝试，最坏情况为n<br>2.球没碎，那问题就转化为100-n楼的情况（已确定n以下的楼层都是安全的，想象砍掉n下方的楼层，目前只剩100-n层了），动态规划中即可以利用之前已有的解，最坏情况F[100-n]+1<br>那么对于每一个n的选择，其最坏情况就是1和2中的较大者。<br>对于100层来说，第一次n的选取可以是1-99。<br>网上给出的代码要么是递归的，要么是二层循环的。<br>讲真，第一次看到这个DP解法感觉很巧妙的样子，细想其实不然，对于第一个想到这个办法的人应该是聪明的，但是后续不断传承这个方法的人那就是愚钝的了。</p>
+<hr>
+<p>我们重新来理一下思路，重点放在每次的n应该如何选取上：<br>第一次选楼层n1丢下去，<br>1.如果球碎了，那就从1层开始往上，最坏情况就是n1<br>2.如果球没碎，那就选一个楼层n2（n2的选择是这里的关键）<br>（1）如果选择的n2大于等于n1，<br>1.如果碎了，那最坏情况就得尝试n2+1次，当前的最坏情况已经超过了上一步的最坏情况了，没有继续分析下去的必要了<br>（2）那如果选择的n2小于n1呢？<br>1.球碎了，最坏情况是n2+1（此时n2+1是小于等于n1的，说明n2小于n1的选择是有意义的）<br>2.球没碎，那么依然是砍掉n2及以下的楼层来简化问题，继续选择n3<br>n3的选择过程同n2。</p>
+<p>可以看到两点<br>1.按照这个思路n1,n2,n3…必须是一个递减的序列，如果玻璃球一直没碎，那就直到n1+n2+n3+…的和超过楼层数为止<br>2.由于n的选择序列递减的性质决定了每次n的选择不能太小。比如n1=20，n2=2,那n3就只能选择1了，这明显是不明智的</p>
+<p>其实分析到这，应该大致有数了，选择n2=n1-1是最佳的做法，那么继续选择n3=n2-1，依次。<br>也就是整个n序列是个差值为1的等差递减序列。<br>等差序列求和超过最大楼层数即可，根本用不着DP，直接设n1为x,求（x, x-1,x-2,…,2,1）的和大于等于100，解出最小的x，就是最终的答案。</p>
+<hr>
+<p><a href="http://blog.csdn.net/helloguoke/article/details/16880251" target="_blank" rel="external">来自网上的解法</a><br>PS：网上的答案都是复制来复制去，这篇也不一定是原文，对原文作者表示歉意。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/零碎记录/" rel="tag"># 零碎记录</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/05/使用python合并pdf文件/" rel="next" title="使用python合并pdf文件">
+                <i class="fa fa-chevron-left"></i> 使用python合并pdf文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/17/机器学习中改进模型的方法/" rel="prev" title="机器学习中改进模型的方法">
+                机器学习中改进模型的方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="czs0x55aa" />
+          <p class="site-author-name" itemprop="name">czs0x55aa</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">czs0x55aa</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

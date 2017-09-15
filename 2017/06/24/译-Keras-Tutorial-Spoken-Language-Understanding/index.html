@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="自然语言处理," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="原文地址该文章主要关于RNN来实现槽填充，比较基础的读物，这里只做粗略的翻译，一些细节还请看原文。原作者提供了Keras实现，近期自己打算用Pytorch重写一个版本。按照原文重写的Pytorch版本，代码写的并不好，主要是当做练习来写的，实验结果基本和原文的一致。">
+<meta name="keywords" content="自然语言处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译]Keras Tutorial - Spoken Language Understanding">
+<meta property="og:url" content="http://czs0x55aa.github.io/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/index.html">
+<meta property="og:site_name" content="Naive">
+<meta property="og:description" content="原文地址该文章主要关于RNN来实现槽填充，比较基础的读物，这里只做粗略的翻译，一些细节还请看原文。原作者提供了Keras实现，近期自己打算用Pytorch重写一个版本。按照原文重写的Pytorch版本，代码写的并不好，主要是当做练习来写的，实验结果基本和原文的一致。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://czs0x55aa.github.io/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/译-Keras-Tutorial-Spoken-Language-Understanding/data_example.png">
+<meta property="og:updated_time" content="2017-09-12T08:14:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译]Keras Tutorial - Spoken Language Understanding">
+<meta name="twitter:description" content="原文地址该文章主要关于RNN来实现槽填充，比较基础的读物，这里只做粗略的翻译，一些细节还请看原文。原作者提供了Keras实现，近期自己打算用Pytorch重写一个版本。按照原文重写的Pytorch版本，代码写的并不好，主要是当做练习来写的，实验结果基本和原文的一致。">
+<meta name="twitter:image" content="http://czs0x55aa.github.io/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/译-Keras-Tutorial-Spoken-Language-Understanding/data_example.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://czs0x55aa.github.io/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/"/>
+
+
+
+
+
+  <title>[译]Keras Tutorial - Spoken Language Understanding | Naive</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Naive</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="czs0x55aa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Naive">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[译]Keras Tutorial - Spoken Language Understanding</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-24T14:50:22+08:00">
+                2017-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://chsasank.github.io/spoken-language-understanding.html" target="_blank" rel="external">原文地址</a><br>该文章主要关于RNN来实现槽填充，比较基础的读物，这里只做粗略的翻译，一些细节还请看原文。<br>原作者提供了Keras实现，近期自己打算用Pytorch重写一个版本。<br>按照原文重写的<a href="https://github.com/czs0x55aa/pytorch-slot-filling" target="_blank" rel="external">Pytorch版本</a>，代码写的并不好，主要是当做练习来写的，实验结果基本和原文的一致。<br><a id="more"></a></p>
+<h2 id="Problem-and-the-Dataset"><a href="#Problem-and-the-Dataset" class="headerlink" title="Problem and the Dataset"></a>Problem and the Dataset</h2><p>我们要解决的问题是自然语言理解(NLU)。NLU的目标是提取语句的含义，然而这仍是个未解决的难题。<br>因此，我们把这个问题简化为一个可解决的实际问题——理解说话者的一部分内容。<br>具体来说，说话者要了解航班信息，那么我们期望去识别出这个意图。  </p>
+<p>我们将使用Airline Travel Information System(ATIS)数据集，该数据集由DARPA在上世纪90年代收集的。<br>ATIS数据集包含了航班相关的咨询语句。<br>例如”I want to go from Boston to Atlanta on Monday.”<br>理解这句话，将其简化为可识别的参数，比如目的地和出发日，这个任务被成为槽填充(slot-filling)。  </p>
+<p>下面是来自数据集的一个句子样例和对应的标签：<br><img src="译-Keras-Tutorial-Spoken-Language-Understanding/data_example.png" alt=""></p>
+<p>ATIS官方数据分为4978条训练集和893条测试集，平均一句话长度为15个词，一共有128个类别(slots)标签。  </p>
+<p>我们的方法将使用到如下技术：  </p>
+<ul>
+<li>Word embeddings</li>
+<li>Recurrent Neural Networks<br>下面几节将介绍这些信息。  </li>
+</ul>
+<h2 id="Word-Embeddings"><a href="#Word-Embeddings" class="headerlink" title="Word Embeddings"></a>Word Embeddings</h2><p>word embeddings 将一个词映射到高维空间。<br>理想情况下，embedding可以学习到语义信息，近义词的向量夹角会比较小，而无关词的向量夹角会比较大。<br>embedding可以通过大量文本语料或放置于特定问题中学习，本文将采用第二种方法。</p>
+<blockquote>
+<p>Word Embeddings 中比较流行的是word2vecter和 glove，不过这里用的是与模型一起训练，这在神经网络模型中也很常见  </p>
+</blockquote>
+<h2 id="Recurrent-Neural-Networks"><a href="#Recurrent-Neural-Networks" class="headerlink" title="Recurrent Neural Networks"></a>Recurrent Neural Networks</h2><p>卷积层可以很好的汇聚局部信息，但是他们无法捕获数据的顺序信息。循环神经网络可以帮助我们捕获序列信息，比如自然语言中的词序。<br>如果我们要预测当前词所属的类别，我们最好去记住它之前的词。RNN单元中有包含了内部记忆单元，能够存储之前的序列信息。因此我们可以使用RNN来出来这类槽填充问题。<br>对于这类问题，我们将使用词的embedding作为RNN的输入。  </p>
+<h2 id="Putting-it-all-together"><a href="#Putting-it-all-together" class="headerlink" title="Putting it all together"></a>Putting it all together</h2><h3 id="Loading-Data"><a href="#Loading-Data" class="headerlink" title="Loading Data"></a>Loading Data</h3><p>我们使用data.load.atisfull()来加载数据。第一次运行时会自动下载数据。<br>将词和标签用词汇表的索引来代替，词表分别存储于w2idx和lables2idx。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> data.load</div><div class="line"></div><div class="line">train_set, valid_set, dicts = data.load.atisfull()</div><div class="line">w2idx, labels2idx = dicts[<span class="string">'words2idx'</span>], dicts[<span class="string">'labels2idx'</span>]</div><div class="line"></div><div class="line">train_x, _, train_label = train_set</div><div class="line">val_x, _, val_label = valid_set</div><div class="line"></div><div class="line"><span class="comment"># Create index to word/label dicts</span></div><div class="line">idx2w = &#123;w2idx[k]:k <span class="keyword">for</span> k <span class="keyword">in</span> w2idx&#125;</div><div class="line">idx2la = &#123;labels2idx[k]:k <span class="keyword">for</span> k <span class="keyword">in</span> labels2idx&#125;</div><div class="line"></div><div class="line"><span class="comment"># For conlleval script</span></div><div class="line">words_train = [ list(map(<span class="keyword">lambda</span> x: idx2w[x], w)) <span class="keyword">for</span> w <span class="keyword">in</span> train_x]</div><div class="line">labels_train = [ list(map(<span class="keyword">lambda</span> x: idx2la[x], y)) <span class="keyword">for</span> y <span class="keyword">in</span> train_label]</div><div class="line">words_val = [ list(map(<span class="keyword">lambda</span> x: idx2w[x], w)) <span class="keyword">for</span> w <span class="keyword">in</span> val_x]</div><div class="line">labels_val = [ list(map(<span class="keyword">lambda</span> x: idx2la[x], y)) <span class="keyword">for</span> y <span class="keyword">in</span> val_label]</div><div class="line"></div><div class="line">n_classes = len(idx2la)</div><div class="line">n_vocab = len(idx2w)</div></pre></td></tr></table></figure></p>
+<h3 id="Keras-Model"><a href="#Keras-Model" class="headerlink" title="Keras Model"></a>Keras Model</h3><p>下面来定义模型，Keras有内置的Embedding层可用于word embeddings。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</div><div class="line"><span class="keyword">from</span> keras.layers.embeddings <span class="keyword">import</span> Embedding</div><div class="line"><span class="keyword">from</span> keras.layers.recurrent <span class="keyword">import</span> SimpleRNN</div><div class="line"><span class="keyword">from</span> keras.layers.core <span class="keyword">import</span> Dense, Dropout</div><div class="line"><span class="keyword">from</span> keras.layers.wrappers <span class="keyword">import</span> TimeDistributed</div><div class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Convolution1D</div><div class="line"></div><div class="line">model = Sequential()</div><div class="line">model.add(Embedding(n_vocab,<span class="number">100</span>))</div><div class="line">model.add(Dropout(<span class="number">0.25</span>))</div><div class="line">model.add(SimpleRNN(<span class="number">100</span>,return_sequences=<span class="keyword">True</span>))</div><div class="line">model.add(TimeDistributed(Dense(n_classes, activation=<span class="string">'softmax'</span>)))</div><div class="line">model.compile(<span class="string">'rmsprop'</span>, <span class="string">'categorical_crossentropy'</span>)</div></pre></td></tr></table></figure></p>
+<h3 id="training"><a href="#training" class="headerlink" title="training"></a>training</h3><p>下面开始训练模型，每批只使用一个句子。<br>由于每个句子的长度不同，这里不能使用model.fit()，我们使用model.train_on_batch()。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> progressbar</div><div class="line">n_epochs = <span class="number">30</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n_epochs):</div><div class="line">	print(<span class="string">"Training epoch &#123;&#125;"</span>.format(i))</div><div class="line"></div><div class="line">	bar = progressbar.ProgressBar(max_value=len(train_x))</div><div class="line">	<span class="keyword">for</span> n_batch, sent <span class="keyword">in</span> bar(enumerate(train_x)):</div><div class="line">	label = train_label[n_batch]</div><div class="line">	<span class="comment"># Make labels one hot</span></div><div class="line">	label = np.eye(n_classes)[label][np.newaxis,:]</div><div class="line">	<span class="comment"># View each sentence as a batch</span></div><div class="line">	sent = sent[np.newaxis,:]</div><div class="line"></div><div class="line">	<span class="keyword">if</span> sent.shape[<span class="number">1</span>] &gt; <span class="number">1</span>: <span class="comment">#ignore 1 word sentences</span></div><div class="line">	model.train_on_batch(sent, label)</div></pre></td></tr></table></figure></p>
+<h3 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h3><p>为了估量模型的准确率，我们使用model.predict_on_batch()和metrics.accuracy.conlleval()。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> metrics.accuracy <span class="keyword">import</span> conlleval</div><div class="line"></div><div class="line">labels_pred_val = []</div><div class="line"></div><div class="line">bar = progressbar.ProgressBar(max_value=len(val_x))</div><div class="line"><span class="keyword">for</span> n_batch, sent <span class="keyword">in</span> bar(enumerate(val_x)):</div><div class="line">	label = val_label[n_batch]</div><div class="line">	label = np.eye(n_classes)[label][np.newaxis,:]</div><div class="line">	sent = sent[np.newaxis,:]</div><div class="line"></div><div class="line">	pred = model.predict_on_batch(sent)</div><div class="line">	pred = np.argmax(pred,<span class="number">-1</span>)[<span class="number">0</span>]</div><div class="line">	labels_pred_val.append(pred)</div><div class="line"></div><div class="line">labels_pred_val = [ list(map(<span class="keyword">lambda</span> x: idx2la[x], y)) \</div><div class="line">	<span class="keyword">for</span> y <span class="keyword">in</span> labels_pred_val]</div><div class="line">con_dict = conlleval(labels_pred_val, labels_val,</div><div class="line">	words_val, <span class="string">'measure.txt'</span>)</div><div class="line"></div><div class="line">print(<span class="string">'Precision = &#123;&#125;, Recall = &#123;&#125;, F1 = &#123;&#125;'</span>.format(</div><div class="line">	con_dict[<span class="string">'r'</span>], con_dict[<span class="string">'p'</span>], con_dict[<span class="string">'f1'</span>]))</div></pre></td></tr></table></figure></p>
+<p> 该模型可以得到92.36的F1。</p>
+<h3 id="Improvements"><a href="#Improvements" class="headerlink" title="Improvements"></a>Improvements</h3><p>该模型的不足在于，预测时没有利用后续的词。<br>可以想象，当前词的属性和下一个词也可能会有关联。<br>为了捕获后续词的信息，可以在RNN和Embedding层之间加入卷基层。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">model = Sequential()</div><div class="line">model.add(Embedding(n_vocab,<span class="number">100</span>))</div><div class="line">model.add(Convolution1D(<span class="number">128</span>, <span class="number">5</span>, border_mode=<span class="string">'same'</span>, activation=<span class="string">'relu'</span>))</div><div class="line">model.add(Dropout(<span class="number">0.25</span>))</div><div class="line">model.add(GRU(<span class="number">100</span>,return_sequences=<span class="keyword">True</span>))</div><div class="line">model.add(TimeDistributed(Dense(n_classes, activation=<span class="string">'softmax'</span>)))</div><div class="line">model.compile(<span class="string">'rmsprop'</span>, <span class="string">'categorical_crossentropy'</span>)</div></pre></td></tr></table></figure></p>
+<p>使用该方法可以达到94.90的F1得分。  </p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li>Grégoire Mesnil, Xiaodong He, Li Deng and Yoshua Bengio. Investigation of Recurrent-Neural-Network Architectures and Learning Methods for Spoken Language Understanding. Interspeech, 2013. pdf</li>
+<li>Recurrent Neural Networks with Word Embeddings, <a href="http://deeplearning.net/tutorial/rnnslu.html" target="_blank" rel="external">theano tutorial</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/自然语言处理/" rel="tag"># 自然语言处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/18/Python源码剖析笔记——List对象/" rel="next" title="Python源码剖析笔记——List对象">
+                <i class="fa fa-chevron-left"></i> Python源码剖析笔记——List对象
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/12/2017网易校招编程题-笔记/" rel="prev" title="2017网易校招编程题-笔记">
+                2017网易校招编程题-笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="czs0x55aa" />
+          <p class="site-author-name" itemprop="name">czs0x55aa</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-and-the-Dataset"><span class="nav-number">1.</span> <span class="nav-text">Problem and the Dataset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Word-Embeddings"><span class="nav-number">2.</span> <span class="nav-text">Word Embeddings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Recurrent-Neural-Networks"><span class="nav-number">3.</span> <span class="nav-text">Recurrent Neural Networks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Putting-it-all-together"><span class="nav-number">4.</span> <span class="nav-text">Putting it all together</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Loading-Data"><span class="nav-number">4.1.</span> <span class="nav-text">Loading Data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keras-Model"><span class="nav-number">4.2.</span> <span class="nav-text">Keras Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#training"><span class="nav-number">4.3.</span> <span class="nav-text">training</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Evaluation"><span class="nav-number">4.4.</span> <span class="nav-text">Evaluation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Improvements"><span class="nav-number">4.5.</span> <span class="nav-text">Improvements</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">5.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">czs0x55aa</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

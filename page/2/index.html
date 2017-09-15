@@ -96,7 +96,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Naive">
-<meta property="og:url" content="http://czs0x55aa.github.io/index.html">
+<meta property="og:url" content="http://czs0x55aa.github.io/page/2/index.html">
 <meta property="og:site_name" content="Naive">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
@@ -129,7 +129,7 @@
 
 
 
-  <link rel="canonical" href="http://czs0x55aa.github.io/"/>
+  <link rel="canonical" href="http://czs0x55aa.github.io/page/2/"/>
 
 
 
@@ -260,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/08/24/记cx-Oracle读写中文的编码问题/">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/09/17/机器学习中改进模型的方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
@@ -279,7 +279,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/24/记cx-Oracle读写中文的编码问题/" itemprop="url">记cx_Oracle读写中文的编码问题</a></h1>
+                <a class="post-title-link" href="/2016/09/17/机器学习中改进模型的方法/" itemprop="url">机器学习中改进模型的方法</a></h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-24T10:26:34+08:00">
-                2017-08-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-17T14:53:26+08:00">
+                2016-09-17
               </time>
             
 
@@ -330,139 +330,12 @@
 
       
         
-          
-            <p>由于要读取Oracle的表结构，在前端页面生成脚本中用到了<code>cx_Oracle</code>,之前在linux上写好的代码，用了几个月都很正常。最近在mac下却出现了编码问题，读取的中文都变为了问号<code>?????</code>.<br>一阵谷歌之后找打的答案都是设置环境变量<code>NLS_LANG</code>，然而我原先代码里就已经配置了环境变量的，极度蒙圈…<br>最后在<a href="https://cx-oracle.readthedocs.io/en/latest/index.html" target="_blank" rel="external">cx_Oracle文档</a>中找到了原因.<br>在Version 6.0 的 Release Notes中有这样一条：</p>
-<blockquote>
-<p>Delay initialization of the ODPI-C library until the first standalone connection or session pool is created so that manipulation of the environment variable NLS_LANG can be performed after the module has been imported; this also has the added benefit of reducing the number of errors that can take place when the module is imported.  </p>
-</blockquote>
-<p>也就是说在这之前的版本中设置NLS_LANG和import是有先后顺序的差别的。<br>赶紧print下<code>cx_Oracle.__version__</code>, 发现是6.0b2, 确实是这个问题，因为习惯性把import写在头部的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">os.environ[<span class="string">'NLS_LANG'</span>] = <span class="string">'SIMPLIFIED CHINESE_CHINA.UTF8'</span></div><div class="line"><span class="keyword">import</span> cx_Oracle</div></pre></td></tr></table></figure></p>
-<p>调整先后顺序后，中文编码就正常了。<br>而之前在linux上运行都正常，原因可能是linux上装的版本反而是新的，由于是使用conda自动安装的，安装时并没有去关注版本号。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/08/12/2017网易校招编程题-笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="czs0x55aa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Naive">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/12/2017网易校招编程题-笔记/" itemprop="url">2017网易校招编程题-笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T21:21:21+08:00">
-                2017-08-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>对网易有一种莫名的执着,然而感觉这次笔试又跪了</p>
-<h2 id="1-独立的小易"><a href="#1-独立的小易" class="headerlink" title="1. 独立的小易"></a>1. 独立的小易</h2><blockquote>
-<p>小易为了向他的父母表现他已经长大独立了,他决定搬出去自己居住一段时间。一个人生活增加了许多花费: 小易每天必须吃一个水果并且需要每天支付x元的房屋租金。当前小易手中已经有f个水果和d元钱,小易也能去商店购买一些水果,商店每个水果售卖p元。小易为了表现他独立生活的能力,希望能独立生活的时间越长越好,小易希望你来帮他计算一下他最多能独立生活多少天。<br>输入描述：<br>输入包括一行,四个整数x, f, d, p(1 ≤ x,f,d,p ≤ 2 * 10^9),以空格分割<br>输出描述：<br>输出一个整数, 表示小易最多能独立生活多少天。</p>
-</blockquote>
-<p>难得遇到一个送分题…<br>
+          <p>在Coursera机器学习的第六周课程中，讲到了如何去改进模型，<br>这也是自己在学习实践中比较困惑的一块内容。因此做个学习记录。</p>
+<hr>
+<p>首先Andrew Ng给出了6个常用改进方法<br>1.Get more training examples， 适用于高方差的情况<br>2.Try smaller sets of features， 适用于高方差<br>3.Try getting additional features， 适用于高偏差问题<br>4.Try adding polynomial features， 类似于上一点，适用于高偏差<br>5.Try decreasing λ， 适用于高偏差<br>6.Try increasing λ， 适用于高方差<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/12/2017网易校招编程题-笔记/#more" rel="contents">
+            <a class="btn" href="/2016/09/17/机器学习中改进模型的方法/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -513,7 +386,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/09/16/一道面试题：扔玻璃球/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
@@ -532,7 +405,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/" itemprop="url">[译]Keras Tutorial - Spoken Language Understanding</a></h1>
+                <a class="post-title-link" href="/2016/09/16/一道面试题：扔玻璃球/" itemprop="url">一道面试题：扔玻璃球</a></h1>
         
 
         <div class="post-meta">
@@ -544,8 +417,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-24T14:50:22+08:00">
-                2017-06-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-16T14:50:35+08:00">
+                2016-09-16
               </time>
             
 
@@ -583,10 +456,10 @@
 
       
         
-          <p><a href="https://chsasank.github.io/spoken-language-understanding.html" target="_blank" rel="external">原文地址</a><br>该文章主要关于RNN来实现槽填充，比较基础的读物，这里只做粗略的翻译，一些细节还请看原文。<br>原作者提供了Keras实现，近期自己打算用Pytorch重写一个版本。<br>按照原文重写的<a href="https://github.com/czs0x55aa/pytorch-slot-filling" target="_blank" rel="external">Pytorch版本</a>，代码写的并不好，主要是当做练习来写的，实验结果基本和原文的一致。<br>
+          <p>前些天很多研三的师兄在刷线上的笔试题，看到腾讯的一道简答题，挺有意思的。<br>当时没想明白，事后查了一下网上的资料，自己又重新思考了一下。这道题之前似乎被很多公司用过。<br>这道题网上有很多的解析，但是几乎都是复制来复制去，完全相同的方法思路。不得不说这是一种互联网信息的病态。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/#more" rel="contents">
+            <a class="btn" href="/2016/09/16/一道面试题：扔玻璃球/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -637,7 +510,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/05/18/Python源码剖析笔记——List对象/">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/09/05/使用python合并pdf文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
@@ -656,7 +529,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/05/18/Python源码剖析笔记——List对象/" itemprop="url">Python源码剖析笔记——List对象</a></h1>
+                <a class="post-title-link" href="/2016/09/05/使用python合并pdf文件/" itemprop="url">使用python合并pdf文件</a></h1>
         
 
         <div class="post-meta">
@@ -668,8 +541,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-18T17:30:00+08:00">
-                2017-05-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-05T14:48:14+08:00">
+                2016-09-05
               </time>
             
 
@@ -707,10 +580,10 @@
 
       
         
-          <h2 id="PyListObject对象"><a href="#PyListObject对象" class="headerlink" title="PyListObject对象"></a>PyListObject对象</h2><p>PyListObject是一个变长对象，也是可变对象，可以有效的支持对元素的插入、添加、删除等操作。<br>
+          <p>当需要合并pdf文件的时候才发现很多pdf软件好像并没有提供这个功能，虽然Acrobat是有的…<br>干脆搜索了下，果然python有支持pdf编辑的库PyPDF2<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/18/Python源码剖析笔记——List对象/#more" rel="contents">
+            <a class="btn" href="/2016/09/05/使用python合并pdf文件/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -761,7 +634,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/05/12/Python源码剖析笔记——字符串对象/">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/08/14/Python在MySQLdb中使用存储过程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
@@ -780,7 +653,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/05/12/Python源码剖析笔记——字符串对象/" itemprop="url">Python源码剖析笔记——字符串对象</a></h1>
+                <a class="post-title-link" href="/2016/08/14/Python在MySQLdb中使用存储过程/" itemprop="url">Python在MySQLdb中使用存储过程</a></h1>
         
 
         <div class="post-meta">
@@ -792,8 +665,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-12T20:27:07+08:00">
-                2017-05-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-14T14:40:03+08:00">
+                2016-08-14
               </time>
             
 
@@ -831,10 +704,10 @@
 
       
         
-          <h2 id="PyStringObject"><a href="#PyStringObject" class="headerlink" title="PyStringObject"></a>PyStringObject</h2><p>PyStringObject是字符串对象的实现。它是一个边长对象，因为存储的字符串可长可短，但它又是一个不可变对象，即创建后其内容就不能再被改变了。<br>
+          <p>起因是为了创建dif词典集，文本中不重复词有18万多（讲道理18W也不是很多呀(╯‵□′)╯︵┻━┻…），但是执行过程非常慢，因为每个词在文档中的出现次数都是通过数据库中查询得到的，意味着要进行18W次查询，于是想试试用存储过程能不能提高速度。<br>结果在调用存储过程的时候遇到了问题…（最近经常遇到些奇奇怪怪的问题…）<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/12/Python源码剖析笔记——字符串对象/#more" rel="contents">
+            <a class="btn" href="/2016/08/14/Python在MySQLdb中使用存储过程/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -885,7 +758,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/03/25/2017网易实习生编程题-笔记/">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/08/08/python的MySQLdb中使用utf8mb4编码遇到的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
@@ -904,7 +777,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/03/25/2017网易实习生编程题-笔记/" itemprop="url">2017网易实习生编程题-笔记</a></h1>
+                <a class="post-title-link" href="/2016/08/08/python的MySQLdb中使用utf8mb4编码遇到的问题/" itemprop="url">python的MySQLdb中使用utf8mb4编码遇到的问题</a></h1>
         
 
         <div class="post-meta">
@@ -916,8 +789,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-25T17:03:02+08:00">
-                2017-03-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-08T14:35:38+08:00">
+                2016-08-08
               </time>
             
 
@@ -955,10 +828,10 @@
 
       
         
-          <p>第一次做招聘类的编程题，还是有点不习惯，网易这次的题明显考察的是推导和思路，实现部分相对简单，也没有涉及到一些常见算法。<br>这里对这次的编程题做个记录，有两题还没有想到好的解法，后面有时间再来补。<br>
+          <p>今天在导入微博文本到mysql的时候遇到了emoji字符，导致数据插入出错的情况。<br>查了一下是因为mysql中的utf8只支持3个字节，emoji和少部分不常用汉字则是4字节的。据说是在mysql5.5开始的版本中支持了utf8mb4编码类型来应对这种4字节的uft8编码。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/03/25/2017网易实习生编程题-笔记/#more" rel="contents">
+            <a class="btn" href="/2016/08/08/python的MySQLdb中使用utf8mb4编码遇到的问题/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1009,7 +882,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/02/27/Python源码剖析笔记——整数对象/">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/08/04/机器学习中的归一化和正则化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
@@ -1028,7 +901,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/02/27/Python源码剖析笔记——整数对象/" itemprop="url">Python源码剖析笔记——整数对象</a></h1>
+                <a class="post-title-link" href="/2016/08/04/机器学习中的归一化和正则化/" itemprop="url">机器学习中的归一化和正则化</a></h1>
         
 
         <div class="post-meta">
@@ -1040,8 +913,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-27T17:22:23+08:00">
-                2017-02-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-04T14:24:27+08:00">
+                2016-08-04
               </time>
             
 
@@ -1079,12 +952,10 @@
 
       
         
-          <p>上一节<a href="http://czs0x55aa.github.io/2017/02/27/Python%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%AF%B9%E8%B1%A1%E5%88%9D%E6%8E%A2/">Python源码剖析笔记——对象初探</a></p>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></div><div class="line">	PyObject_HEAD</div><div class="line">	<span class="keyword">long</span> ob_ival;</div><div class="line">&#125; PyIntObject</div></pre></td></tr></table></figure>
-<p>PyObject_HEAD里面包含了int类型的引用计数器ob_refcnt和_typeobject类型的用于存储类信息的结构体指针ob_type。<br>对于整形对象而言，这里的ob_type指向的是一个PyInt_Type对象。<br>ob_ival则用于存储实际的整数值。<br>
+          <p>归一化和正则化在机器学习中是两个完全不同的概念，之所以把他们放在一篇文章里是因为网络上不少文章经常混淆概念的使用这些词。<br>经常在一些文章中提到归一化和正则化，网上有些文章中会替换使用归一化和正则化的翻译，自己在学习的过程中也一度误解了，故今天花时间整理了一下。<br>查了几本书中的翻译，一般将Regularization译为正则化。Normalization一般则译为归一化，另外还有Standardization译为标准化，有的地方对归一化和标准化没有做详细区分，我目前的理解是Standardization是一种特殊的Normalization。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/02/27/Python源码剖析笔记——整数对象/#more" rel="contents">
+            <a class="btn" href="/2016/08/04/机器学习中的归一化和正则化/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1135,7 +1006,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/02/27/Python源码剖析笔记——对象初探/">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/06/29/ubuntu下使用pptpd搭建VPN Server/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
@@ -1154,7 +1025,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/02/27/Python源码剖析笔记——对象初探/" itemprop="url">Python源码剖析笔记——对象初探</a></h1>
+                <a class="post-title-link" href="/2016/06/29/ubuntu下使用pptpd搭建VPN Server/" itemprop="url">ubuntu下使用pptpd搭建VPN Server</a></h1>
         
 
         <div class="post-meta">
@@ -1166,8 +1037,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-27T16:39:13+08:00">
-                2017-02-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-29T14:04:21+08:00">
+                2016-06-29
               </time>
             
 
@@ -1205,11 +1076,10 @@
 
       
         
-          <h1 id="笔记说明"><a href="#笔记说明" class="headerlink" title="笔记说明"></a>笔记说明</h1><p>该笔记是对《Python源码剖析》学习过程的记录，这本书有点老了，源码是2.5版本的。由于阅读的时候比较仓促，并没有与目前2.7的源码做比较，里面的一些细节可能过时了。<br>该笔记以整体概念的记录和梳理为主，忽略了书中的一些实现细节的介绍。</p>
-<h1 id="基本概念梳理"><a href="#基本概念梳理" class="headerlink" title="基本概念梳理"></a>基本概念梳理</h1><h2 id="PyObject"><a href="#PyObject" class="headerlink" title="PyObject"></a>PyObject</h2><p>Python中所有的东西都是对象，所有的对象都拥有一些相同的内容，这些内容定义在PyObject中<br><figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">object</span>&#123;</span></div><div class="line">	PyObject_HEAD</div><div class="line">&#125; PyObject;</div></pre></td></tr></table></figure></p>
+          <p>由于之前用ss搭建的出校器没有预期的好用，主要还是ss不方便配置全局，路由器上的ss又不走udp，导致这几天一直在折腾实验室的网络<br>今天尝试了下用pptpd搭VPN Server，搭VPN的方法很多，据说pptpd比较简单，所以选择了它<br>网上的资料比较多，基本按网上的步骤操作，主要只是为了记录一下过程<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/02/27/Python源码剖析笔记——对象初探/#more" rel="contents">
+            <a class="btn" href="/2016/06/29/ubuntu下使用pptpd搭建VPN Server/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1260,7 +1130,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/12/20/ubuntu16-04-CUDA-Tensorflow-Keras环境搭建/">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/06/09/使用校园内网和寝室宽带搭建出校器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
@@ -1279,7 +1149,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/12/20/ubuntu16-04-CUDA-Tensorflow-Keras环境搭建/" itemprop="url">ubuntu16.04+CUDA+Tensorflow+Keras环境搭建</a></h1>
+                <a class="post-title-link" href="/2016/06/09/使用校园内网和寝室宽带搭建出校器/" itemprop="url">使用校园内网和寝室宽带搭建出校器</a></h1>
         
 
         <div class="post-meta">
@@ -1291,8 +1161,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-20T15:52:20+08:00">
-                2016-12-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-09T13:53:35+08:00">
+                2016-06-09
               </time>
             
 
@@ -1330,135 +1200,10 @@
 
       
         
-          <p>ubuntu安装环节略过，另外系统安装后记得更新下Nvidia的驱动</p>
-<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><p>系统：ubuntu 16.04<br>显卡：GTX 1060 6G<br>python环境：python2.7 (已安装Anaconda4.2)<br>
+          <p>由于实验室用的出校器太坑了，恰好寝室未拨号状态下和实验室电脑是可以互通的，于是就打算利用寝室已有的宽带搭建一个自用出校器。<br>由于学校内网似乎会拦截VPN（后来试验过，内网的VPN工作良好），所以选用了Shadowsocks.<br>思路：让寝室一台笔记本同时连着wifi（连接外网）和有线（连接校园内网），并搭建ss服务器，实验室的电脑使用ss客户端连接寝室的电脑，从而不用收费的访问外网。<br>这个思路其实和使用ss翻墙是一个道理。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/12/20/ubuntu16-04-CUDA-Tensorflow-Keras环境搭建/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/09/26/fastText文本分类实践/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="czs0x55aa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Naive">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/09/26/fastText文本分类实践/" itemprop="url">fastText文本分类实践</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-26T15:02:35+08:00">
-                2016-09-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前不久facebook开源了一个fastText工具，最近在网上传的挺火。<br>相关论文：<br>[1] P. Bojanowski<em>, E. Grave</em>, A. Joulin, T. Mikolov, <a href="https://arxiv.org/pdf/1607.04606v1.pdf" target="_blank" rel="external">Enriching Word Vectors with Subword Information</a><br>[2] A. Joulin, E. Grave, P. Bojanowski, T. Mikolov, <a href="https://arxiv.org/pdf/1607.01759v2.pdf" target="_blank" rel="external">Bag of Tricks for Efficient Text Classification</a><br>第一篇还没看，粗读了第二篇，fastText使用的模型和word2vec的模型确实很相似，论文中对模型的描述比较少（可能大牛觉得模型太简单了..）<br>论文给的实验结果来看也很漂亮，性能上比较了几个复杂的模型，准确率很相近，训练时间是一大亮点。<br>不过网上对该论文的评价不是很高，可能因为论文整体好像没有多少创新吧，我这样的菜鸡读过后的感觉就是简化了已有的模型跑出了不错的效果。<br>由于看起来性能和训练时间确实都不错，还是决定拿来跑一下。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/09/26/fastText文本分类实践/#more" rel="contents">
+            <a class="btn" href="/2016/06/09/使用校园内网和寝室宽带搭建出校器/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1500,7 +1245,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
   </nav>
 
 
