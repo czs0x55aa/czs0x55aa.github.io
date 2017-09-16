@@ -39,7 +39,7 @@ def fasttext_test(epoch=20):
     print res.precision
     return res.precision
 ```
-![](fastText文本分类实践/learning-curve.png)
+![](learning-curve.png)
 总样本就是之前说过的26000+，横坐标是使用的训练样本的比例，验证的样本数量为剩余中随机选取的500个。
 从0.7后面下降的位置实际上是不太合理的，因为算法接口的原因，这张图绘制的时候每次都是经过重新采样学习的，有一定的误差在里面。
 但是总体上看1W多样本的时候已经接近78%的准确率了，后续增加样本基本不起作用，实际情况和语料还是有一定关系的。

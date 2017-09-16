@@ -11,6 +11,7 @@ categories:
 ### 1.1 逻辑回归的cost
 $$ J(\theta) = \frac{1}{m}\sum\_{i=1}^{m}\left[y^{i}\,log\, h(x^{i})\ +\ (1\ -\ y^{i})\,log\,(1\ -\ h(x^{i}))\right] $$
 由于逻辑回归中使用了非线性的sigmoid函数，为了保持目标函数为凸函数，该目标函数与线性回归有所不同。
+<!-- more -->
 ### 1.2 梯度计算
 $$
 \begin{align}
@@ -39,8 +40,26 @@ a\_i = \frac{exp(x\_i)}{\sum\_{j=1}^{n}\,exp(x\_j)} $$
 则有：
 $$
 \begin{align}
-\frac{\partial\,Loss}{\partial\,w\_{j}} &= \frac{\partial\,Loss}{\partial\,a\_i}\,\frac{\partial\,a\_i}{\partial\,z\_i}\,\frac{\partial\,z\_i}{\partial\,w\_i} \\\\
-&=-\frac{x\_i}{a\_i}\,\frac{\partial\,a\_i}{\partial\,z\_i}
+\frac{\partial\,Loss}{\partial\,w\_{j}} &= \frac{\partial\,Loss}{\partial\,a\_i}\,\frac{\partial\,a\_i}{\partial\,z\_i} \\\\
+&=-\frac{1}{a\_i}\,\frac{\partial\,a\_i}{\partial\,z\_i}
 \end{align}
 $$
 其中的$\frac{\partial\,a\_i}{\partial\,z\_i}$需要分类讨论。
+这是因为softmax函数的分子部分对应了一个节点，这个节点是不是目标项，对其求导是有影响的。  
+一种是分子的节点j与目标项对应（这样的描述好像不准确...不知道怎么表述）：
+$$
+\begin{align}
+\frac{\partial\,a\_j}{\partial\,z\_{i}} &= \frac{e^{z\_j}\,\sum\_{k=1}^{n}\,e^{z\_k}\,-\,e^{z\_j}\,e^{z\_j}}{(\sum\_{k=1}^{n}\,e^{z\_k})^2} \\\\
+&= \frac{e^{z\_j}}{\sum\_{k=1}^{n}\,e^{z\_k}}\,-\,\frac{e^{z\_j}}{\sum\_{k=1}^{n}\,e^{z\_k}}\,\frac{e^{z\_j}}{\sum\_{k=1}^{n}\,e^{z\_k}} \\\\
+&= a\_j\,(1\,-\,a\_j)
+\end{align}
+$$
+另一种是分子节点j不是与目标项对应的，那么求导时分子的前一项为0：
+$$
+\begin{align}
+\frac{\partial\,a\_j}{\partial\,z\_{i}} &= \frac{-\,e^{z\_i}\,e^{z\_j}}{(\sum\_{k=1}^{n}\,e^{z\_k})^2} \\\\
+&= -\,\frac{e^{z\_i}}{\sum\_{k=1}^{n}\,e^{z\_k}}\,\frac{e^{z\_j}}{\sum\_{k=1}^{n}\,e^{z\_k}} \\\\
+&= -\,a\_i\,a\_j
+\end{align}
+$$
+将两种情况分别带到之前梯度的式子中，分别为$(a\_j-1)$和$a\_i$。

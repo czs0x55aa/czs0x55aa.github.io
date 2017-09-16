@@ -77,10 +77,10 @@ menu_icons:
 # ---------------------------------------------------------------
 
 # Schemes
-scheme: Muse
-#scheme: Mist
-#scheme: Pisces
-#scheme: Gemini
+# scheme: Muse
+# scheme: Mist
+# scheme: Pisces
+scheme: Gemini
 
 
 # ---------------------------------------------------------------
@@ -90,8 +90,11 @@ scheme: Muse
 # Social Links
 # Key is the link label showing to end users.
 # Value is the target link (E.g. GitHub: https://github.com/iissnan)
-#social:
+social:
   #LinkLabel: Link
+  GitHub: https://github.com/czs0x55aa
+  ZhiHu: https://www.zhihu.com/people/czs0x55aa
+  Gmail: mailto:czs0x55aa@gmail.com
 
 # Social Links Icons
 # Icon Mapping:
@@ -126,7 +129,7 @@ social_icons:
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.jpg
 # in site  directory(source/uploads): /uploads/avatar.jpg
-#avatar:
+avatar: https://raw.githubusercontent.com/czs0x55aa/czs0x55aa.github.io/hexo/avatar.png
 
 # Table Of Contents in the Sidebar
 toc:
@@ -249,7 +252,7 @@ custom_logo:
 # Available value:
 #    normal | night | night eighties | night blue | night bright
 # https://github.com/chriskempson/tomorrow-theme
-highlight_theme: normal
+highlight_theme: night
 
 
 # ---------------------------------------------------------------
@@ -307,7 +310,7 @@ font:
 mathjax:
   enable: true
   per_page: false
-  cdn: //cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML
+  cdn: //cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML
 
 # Han Support docs: https://hanzi.pro/
 han: false

@@ -19,7 +19,7 @@ ATIS数据集包含了航班相关的咨询语句。
 理解这句话，将其简化为可识别的参数，比如目的地和出发日，这个任务被成为槽填充(slot-filling)。  
 
 下面是来自数据集的一个句子样例和对应的标签：  
-![](译-Keras-Tutorial-Spoken-Language-Understanding/data_example.png)
+![](data_example.png)
 
 ATIS官方数据分为4978条训练集和893条测试集，平均一句话长度为15个词，一共有128个类别(slots)标签。  
 

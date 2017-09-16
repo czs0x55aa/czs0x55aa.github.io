@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -102,12 +102,12 @@
 <meta property="og:site_name" content="Naive">
 <meta property="og:description" content="归一化和正则化在机器学习中是两个完全不同的概念，之所以把他们放在一篇文章里是因为网络上不少文章经常混淆概念的使用这些词。经常在一些文章中提到归一化和正则化，网上有些文章中会替换使用归一化和正则化的翻译，自己在学习的过程中也一度误解了，故今天花时间整理了一下。查了几本书中的翻译，一般将Regularization译为正则化。Normalization一般则译为归一化，另外还有Standardizat">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://czs0x55aa.github.io/2016/08/04/机器学习中的归一化和正则化/机器学习中的归一化和正则化/Regularization.png">
-<meta property="og:updated_time" content="2017-09-12T08:14:42.000Z">
+<meta property="og:image" content="http://czs0x55aa.github.io/2016/08/04/机器学习中的归一化和正则化/Regularization.png">
+<meta property="og:updated_time" content="2017-09-15T04:16:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习中的归一化和正则化">
 <meta name="twitter:description" content="归一化和正则化在机器学习中是两个完全不同的概念，之所以把他们放在一篇文章里是因为网络上不少文章经常混淆概念的使用这些词。经常在一些文章中提到归一化和正则化，网上有些文章中会替换使用归一化和正则化的翻译，自己在学习的过程中也一度误解了，故今天花时间整理了一下。查了几本书中的翻译，一般将Regularization译为正则化。Normalization一般则译为归一化，另外还有Standardizat">
-<meta name="twitter:image" content="http://czs0x55aa.github.io/2016/08/04/机器学习中的归一化和正则化/机器学习中的归一化和正则化/Regularization.png">
+<meta name="twitter:image" content="http://czs0x55aa.github.io/2016/08/04/机器学习中的归一化和正则化/Regularization.png">
 
 
 
@@ -115,7 +115,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Gemini',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
@@ -270,7 +270,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/czs0x55aa/czs0x55aa.github.io/hexo/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -333,7 +333,7 @@
 
       
         <p>归一化和正则化在机器学习中是两个完全不同的概念，之所以把他们放在一篇文章里是因为网络上不少文章经常混淆概念的使用这些词。<br>经常在一些文章中提到归一化和正则化，网上有些文章中会替换使用归一化和正则化的翻译，自己在学习的过程中也一度误解了，故今天花时间整理了一下。<br>查了几本书中的翻译，一般将Regularization译为正则化。Normalization一般则译为归一化，另外还有Standardization译为标准化，有的地方对归一化和标准化没有做详细区分，我目前的理解是Standardization是一种特殊的Normalization。<br><a id="more"></a></p>
-<h2 id="一、正则化"><a href="#一、正则化" class="headerlink" title="一、正则化"></a>一、正则化</h2><p>引入正则化的目的主要是为了处理过拟合（over-fitting），正则化是解决过拟合的方法之一。<br>李航的《统计学习方法》一书的1.4节有对过拟合和正则化的详细描述，另外可参考尾部链接【1】。<br>除了处理过拟合。<br>还有另一个副作用，在模型参数求解中可能存在多个最优解，正则化可以对模型起到惩罚作用，从而获得唯一的最优解（这个作用是在周志华的《机器学习》一书中提到）。Andrew Ng在Coursera的机器学习课程中给出了更具数学化的解释，在正规方程求解过程中引入正则化来避免不可逆的情况。<br><img src="机器学习中的归一化和正则化/Regularization.png" alt=""></p>
+<h2 id="一、正则化"><a href="#一、正则化" class="headerlink" title="一、正则化"></a>一、正则化</h2><p>引入正则化的目的主要是为了处理过拟合（over-fitting），正则化是解决过拟合的方法之一。<br>李航的《统计学习方法》一书的1.4节有对过拟合和正则化的详细描述，另外可参考尾部链接【1】。<br>除了处理过拟合。<br>还有另一个副作用，在模型参数求解中可能存在多个最优解，正则化可以对模型起到惩罚作用，从而获得唯一的最优解（这个作用是在周志华的《机器学习》一书中提到）。Andrew Ng在Coursera的机器学习课程中给出了更具数学化的解释，在正规方程求解过程中引入正则化来避免不可逆的情况。<br><img src="Regularization.png" alt=""></p>
 <h2 id="二、归一化-标准化"><a href="#二、归一化-标准化" class="headerlink" title="二、归一化/标准化"></a>二、归一化/标准化</h2><p>归一化主要用于处理各维特征量纲不同的情况。<br>2.1归一化带来的好处（详见尾部链接【2】）：<br>1.提高梯度优化的收敛速度<br>2.有可能提高结果精度<br>2.2常用的归一化方法（详见尾部链接【2】）：<br>1.线性归一化<br>2.标准差归一化（有些地方将其称为标准化）<br>3.非线性归一化<br>2.3哪些模型中需要对数据做归一化<br>作为新手，这个问题很苦恼，比如像决策树好像就不需要做归一化，但是SVM、KNN、神经网络之类一般都得做归一化。<br>在网上查了很久没找到这方面的详细解释，在知乎上看到一个简短的说法：</p>
 <blockquote>
 <p>概率模型不需要归一化，因为它们不关心变量的值，而是关心变量的分布和变量之间的条件概率。像svm、线性回归之类的最优化问题就需要归一化。</p>
@@ -448,7 +448,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/avatar.gif"
+               src="https://raw.githubusercontent.com/czs0x55aa/czs0x55aa.github.io/hexo/avatar.png"
                alt="czs0x55aa" />
           <p class="site-author-name" itemprop="name">czs0x55aa</p>
            
@@ -472,10 +472,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -484,6 +484,41 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/czs0x55aa" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/czs0x55aa" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      ZhiHu
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:czs0x55aa@gmail.com" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Gmail
+                    
+                </a>
+              </span>
+            
           
         </div>
 
@@ -546,7 +581,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Gemini
   </a>
 </div>
 
@@ -626,6 +661,13 @@
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
@@ -679,6 +721,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
 
   
 

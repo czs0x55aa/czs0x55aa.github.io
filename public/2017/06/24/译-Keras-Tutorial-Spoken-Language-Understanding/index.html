@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -102,12 +102,12 @@
 <meta property="og:site_name" content="Naive">
 <meta property="og:description" content="原文地址该文章主要关于RNN来实现槽填充，比较基础的读物，这里只做粗略的翻译，一些细节还请看原文。原作者提供了Keras实现，近期自己打算用Pytorch重写一个版本。按照原文重写的Pytorch版本，代码写的并不好，主要是当做练习来写的，实验结果基本和原文的一致。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://czs0x55aa.github.io/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/译-Keras-Tutorial-Spoken-Language-Understanding/data_example.png">
-<meta property="og:updated_time" content="2017-09-12T08:14:42.000Z">
+<meta property="og:image" content="http://czs0x55aa.github.io/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/data_example.png">
+<meta property="og:updated_time" content="2017-09-15T04:16:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[译]Keras Tutorial - Spoken Language Understanding">
 <meta name="twitter:description" content="原文地址该文章主要关于RNN来实现槽填充，比较基础的读物，这里只做粗略的翻译，一些细节还请看原文。原作者提供了Keras实现，近期自己打算用Pytorch重写一个版本。按照原文重写的Pytorch版本，代码写的并不好，主要是当做练习来写的，实验结果基本和原文的一致。">
-<meta name="twitter:image" content="http://czs0x55aa.github.io/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/译-Keras-Tutorial-Spoken-Language-Understanding/data_example.png">
+<meta name="twitter:image" content="http://czs0x55aa.github.io/2017/06/24/译-Keras-Tutorial-Spoken-Language-Understanding/data_example.png">
 
 
 
@@ -115,7 +115,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Gemini',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
@@ -270,7 +270,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="czs0x55aa">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/czs0x55aa/czs0x55aa.github.io/hexo/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -335,7 +335,7 @@
         <p><a href="https://chsasank.github.io/spoken-language-understanding.html" target="_blank" rel="external">原文地址</a><br>该文章主要关于RNN来实现槽填充，比较基础的读物，这里只做粗略的翻译，一些细节还请看原文。<br>原作者提供了Keras实现，近期自己打算用Pytorch重写一个版本。<br>按照原文重写的<a href="https://github.com/czs0x55aa/pytorch-slot-filling" target="_blank" rel="external">Pytorch版本</a>，代码写的并不好，主要是当做练习来写的，实验结果基本和原文的一致。<br><a id="more"></a></p>
 <h2 id="Problem-and-the-Dataset"><a href="#Problem-and-the-Dataset" class="headerlink" title="Problem and the Dataset"></a>Problem and the Dataset</h2><p>我们要解决的问题是自然语言理解(NLU)。NLU的目标是提取语句的含义，然而这仍是个未解决的难题。<br>因此，我们把这个问题简化为一个可解决的实际问题——理解说话者的一部分内容。<br>具体来说，说话者要了解航班信息，那么我们期望去识别出这个意图。  </p>
 <p>我们将使用Airline Travel Information System(ATIS)数据集，该数据集由DARPA在上世纪90年代收集的。<br>ATIS数据集包含了航班相关的咨询语句。<br>例如”I want to go from Boston to Atlanta on Monday.”<br>理解这句话，将其简化为可识别的参数，比如目的地和出发日，这个任务被成为槽填充(slot-filling)。  </p>
-<p>下面是来自数据集的一个句子样例和对应的标签：<br><img src="译-Keras-Tutorial-Spoken-Language-Understanding/data_example.png" alt=""></p>
+<p>下面是来自数据集的一个句子样例和对应的标签：<br><img src="data_example.png" alt=""></p>
 <p>ATIS官方数据分为4978条训练集和893条测试集，平均一句话长度为15个词，一共有128个类别(slots)标签。  </p>
 <p>我们的方法将使用到如下技术：  </p>
 <ul>
@@ -465,7 +465,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/avatar.gif"
+               src="https://raw.githubusercontent.com/czs0x55aa/czs0x55aa.github.io/hexo/avatar.png"
                alt="czs0x55aa" />
           <p class="site-author-name" itemprop="name">czs0x55aa</p>
            
@@ -489,10 +489,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -501,6 +501,41 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/czs0x55aa" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/czs0x55aa" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      ZhiHu
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:czs0x55aa@gmail.com" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Gmail
+                    
+                </a>
+              </span>
+            
           
         </div>
 
@@ -563,7 +598,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Gemini
   </a>
 </div>
 
@@ -643,6 +678,13 @@
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
@@ -696,6 +738,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
 
   
 
