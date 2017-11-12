@@ -260,6 +260,131 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2017/02/27/Python源码剖析笔记——对象初探/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="czs0x55aa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/czs0x55aa/czs0x55aa.github.io/hexo/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Naive">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/02/27/Python源码剖析笔记——对象初探/" itemprop="url">Python源码剖析笔记——对象初探</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-27T16:39:13+08:00">
+                2017-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="笔记说明"><a href="#笔记说明" class="headerlink" title="笔记说明"></a>笔记说明</h1><p>该笔记是对《Python源码剖析》学习过程的记录，这本书有点老了，源码是2.5版本的。由于阅读的时候比较仓促，并没有与目前2.7的源码做比较，里面的一些细节可能过时了。<br>该笔记以整体概念的记录和梳理为主，忽略了书中的一些实现细节的介绍。</p>
+<h1 id="基本概念梳理"><a href="#基本概念梳理" class="headerlink" title="基本概念梳理"></a>基本概念梳理</h1><h2 id="PyObject"><a href="#PyObject" class="headerlink" title="PyObject"></a>PyObject</h2><p>Python中所有的东西都是对象，所有的对象都拥有一些相同的内容，这些内容定义在PyObject中<br><figure class="highlight cc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">object</span>&#123;</span></div><div class="line">	PyObject_HEAD</div><div class="line">&#125; PyObject;</div></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/27/Python源码剖析笔记——对象初探/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/12/20/ubuntu16-04-CUDA-Tensorflow-Keras环境搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1366,135 +1491,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://czs0x55aa.github.io/2016/06/09/使用校园内网和寝室宽带搭建出校器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="czs0x55aa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/czs0x55aa/czs0x55aa.github.io/hexo/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Naive">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/06/09/使用校园内网和寝室宽带搭建出校器/" itemprop="url">使用校园内网和寝室宽带搭建出校器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-09T13:53:35+08:00">
-                2016-06-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>由于实验室用的出校器太坑了，恰好寝室未拨号状态下和实验室电脑是可以互通的，于是就打算利用寝室已有的宽带搭建一个自用出校器。<br>由于学校内网似乎会拦截VPN（后来试验过，内网的VPN工作良好），所以选用了Shadowsocks.<br>思路：让寝室一台笔记本同时连着wifi（连接外网）和有线（连接校园内网），并搭建ss服务器，实验室的电脑使用ss客户端连接寝室的电脑，从而不用收费的访问外网。<br>这个思路其实和使用ss翻墙是一个道理。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/06/09/使用校园内网和寝室宽带搭建出校器/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1540,7 +1541,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1553,7 +1554,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
